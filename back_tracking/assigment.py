@@ -87,6 +87,51 @@ Nếu có hai cách là hoán vị của nhau (về vị trí) thì chỉ tính 
 
 Ý tưởng: 
 """
+def queen_set(n_queen):
+    def is_safe(board, row, col):
+        """
+        Args: 
+        - board: bàn cờ 
+        - row: tọa độ hàng 
+        - col: tọa độ cột 
+
+        Return: True / False 
+        """
+        # Kiểm tra cột 
+        for i in range(row):
+            if board[i] == col: 
+                return False 
+        
+        # Kiểm tra đường chéo chính 
+        for i in range(row):
+            if board[i] - i == col - row: 
+                return False 
+        
+        # Kiểm tra đường chéo phụ 
+        for i in range(row):
+            if board[i] + i == col + row: 
+                return False 
+        return True 
+
+    def solve(board, row, result):
+        # base case 
+        if row == n_queen:
+            # loại bỏ những solution hoán vị
+            normalized_solution = tuple(sorted((r, board[r]) for r in range(n_queen)))
+            result.add(normalized_solution)
+            return 
+        
+        # recursive 
+        for col in range(n_queen):
+            if is_safe(board, row, col):
+                board[row] = col 
+                solve(board, row + 1, result)
+                board[row] = -1
+
+    board = [-1] * n_queen # Mảng lưu vị trí các quân hậu trên từng hàng 
+    result = set()
+    solve(board, 0, result)
+    return result
 
 
 if __name__ == "__main__": 
@@ -114,3 +159,6 @@ if __name__ == "__main__":
     print(res)
     print(len(res))
 
+    # BT4 
+    solutions = queen_set(2)
+    print(0)
