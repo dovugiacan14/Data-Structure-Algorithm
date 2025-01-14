@@ -116,7 +116,6 @@ def queen_set(n_queen):
     def solve(board, row, result):
         # base case 
         if row == n_queen:
-            # loại bỏ những solution hoán vị
             normalized_solution = tuple(sorted((r, board[r]) for r in range(n_queen)))
             result.add(normalized_solution)
             return 
@@ -128,7 +127,7 @@ def queen_set(n_queen):
                 solve(board, row + 1, result)
                 board[row] = -1
 
-    board = [-1] * n_queen # Mảng lưu vị trí các quân hậu trên từng hàng 
+    board = [-1] * n_queen # save the position of each queen in each row
     result = set()
     solve(board, 0, result)
     return result
