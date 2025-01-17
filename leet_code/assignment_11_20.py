@@ -319,3 +319,72 @@ def four_sum(nums, target):
         result.append(list(elem))
     return result
 
+"""Assignment 19: Remove Nth Node From End of List
+Given the head of a linked list, remove the nth node from the end of the list and return its head.
+
+Example: 
+- Input: head = [1,2,3,4,5], n = 2
+- Output: [1, 2, 3, 5]
+"""
+class ListNode:
+    def __init__(self, val= 0, next= None):
+        self.val = val
+        self.next = next 
+    
+def remove_nth_from_end(head, n):
+    if not head: 
+        return None 
+    head_lst = []
+    while head: 
+        head_lst.append(head.val)
+        head = head.next 
+    
+    head_lst.pop(-n)
+    if not head_lst:
+        return None 
+    new_head = ListNode(head_lst[0])
+    cur = new_head
+    for val in head_lst[1:]:
+        cur.next = ListNode(val)
+        cur = cur.next
+    return new_head
+
+
+"""Assignment 20: Valid Parentheses. 
+Given a string s containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid.
+
+An input string is valid if: 
+1. Open brackets must be closed by the same type of brackets. 
+2. Open brackets must be closed in the correct order. 
+3. Every close bracket has a corresponding open bracket of the same type. 
+
+Example: 
+- Input: s=  "()[]{}" 
+- Output: True 
+
+- Input:  "([])"
+- Output: True 
+"""
+def isValid(s): 
+    if len(s) % 2 == 1: 
+        return False 
+
+    solution = []
+    for bracket in s: 
+        if bracket in ["(", "{", "["]:
+            solution.append(bracket)
+            continue 
+
+        if not solution: 
+            return False 
+
+        if bracket == ")" and not solution[-1] == "(":
+            return False 
+        if bracket == "]" and not solution[-1] == "[": 
+            return False 
+        if bracket == "}" and not solution[-1] == "{": 
+            return False 
+        
+        solution = solution[:-1]
+    return len(solution) == 0
+
