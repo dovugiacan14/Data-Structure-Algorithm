@@ -1,7 +1,17 @@
 # DATA STRUCTURE AND ALGORITHM 
 Repository này tổng hợp lại những kiến thức về lập trình Python và một số bài code trên Leet Code nhằm mục đích ôn luyện và lưu lại kiến thức. 
 
-## 1. Các kiểu dữ liệu căn bản: 
+## 1. Tổng quan về Cấu trúc dữ liệu: 
+- **Cấu trúc dữ liệu:** là cách tổ chức, quản lý và lưu trữ dữ liệu một cách hiệu quả để có thể thuận tiện cho việc truy cập và điều chỉnh dữ liệu. Nó giúp tối ưu hóa các thao tác xử lý dữ liệu như tìm kiếm, chèn, xóa, hay sắp xếp. 
+
+- **Giải thuật**: là một tập hợp các bước được xác định rõ ràng để giải quyết một vấn đề cụ thể. (step-by-step instructions).
+
+Có 3 loại CTDL chính: 
+- CTDL lưu trữ: thường có các thao tác như thêm, xóa, tìm kiếm phần tử. (Array, Linked list, Stack, Queue, Deque, Binary Search Tree, Hash Table,...)
+- CTDL truy vấn: thường dùng cho các bài toán cần duy trì một tập hợp các số và thực hiện một số truy vấn trên đó. (Prefix Sum, Disjoint Sets, Sparse Table, Segment Tree, Fenwick, Heavy-light Decomposition, Persistent Data Structures)
+- CTDL xâu: dùng cho các bài toán **xử lý xâu.** (Ex: Trie, Suffix array, Suffix Automaton, Palindrome Tree)
+
+## 2. Các kiểu dữ liệu căn bản: 
 
 | Tiêu chí              | **List** | **Set** | **Dict** | **Tuple** | 
 | :------| :------- | :------- |:------- |:------- |

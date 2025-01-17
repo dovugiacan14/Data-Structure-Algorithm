@@ -52,3 +52,24 @@ def get_item(total_item, max_weight):
         if j >= 0: 
             maxValue = max(maxValue, sumVA[i] + maxSumWB[j])
     return maxValue
+
+"""Assigment 2: Cho mảng a gồm n số nguyên, đếm số lượng dãy con tăng có độ dài 3. 
+
+"""
+def count_increase_string(arr): 
+    answer = 0
+    n = len(arr)
+    for j in range(0, n): 
+        smaller = 0 
+        bigger = 0 
+        for i in range(j):
+            if arr[i] < arr[j]:
+                smaller += 1 
+        for k in range(j+1, n):
+            if arr[k] > arr[j]: 
+                bigger += 1 
+        answer += smaller * bigger
+    return answer
+
+arr = [1,2,3,4,5,6,2,3,4,1,2,5]
+print(count_increase_string(arr))  
