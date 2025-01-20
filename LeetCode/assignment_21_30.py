@@ -1,3 +1,47 @@
+"""Assignment 21: Merge Two Sorted Lists 
+
+You are given the heads of two sorted linked lists list1 and list2.
+Merge the two lists into one sorted list. The list should be made by splicing together the nodes of the first two lists.
+Return the head of the merged linked list.
+
+Example 1: 
+- Input: list1 = [1,2,4], list2 = [1,3,4]
+- Ouput: [1,1,2,3,4,4]
+"""
+class ListNode:
+    def __init__(self, val= 0, next= None):
+        self.val = val
+        self.next = next 
+    
+def merge_two_lists(list1, list2):
+    if not list1 and not list2:
+        return None 
+    
+    # convert linked list to array 
+    list1_arr = []
+    list2_arr = []
+    while list1: 
+        list1_arr.append(list1.val)
+        list1 = list1.next 
+    while list2:
+        list2_arr.append(list2.val)
+        list2 = list2.next
+    
+    # process 
+    new_list = list1_arr + list2_arr
+    new_list.sort()
+
+    # convert list to Node 
+    if not new_list: 
+        return None 
+    res_node = ListNode(new_list[0])
+    cur = res_node
+    for val in new_list[1:]:
+        cur.next = ListNode(val)
+        cur = cur.next 
+    return res_node
+
+
 """Assignment 22: Generate Parentheses 
 
 Given n pairs of parentheses, write a function to generate all combinations of well-formed parentheses.
@@ -19,6 +63,37 @@ def generate_parenthesis(n):
             back_track(s + ")", open, close + 1)
     back_track("", 0, 0)
     return result 
+
+
+"""Assignment 23: Merge k Sorted Lists 
+
+You are given an array of k linked-lists lists, each linked-list is sorted in ascending order.
+Merge all the linked-lists into one sorted linked-list and return it.
+
+Example 1: 
+- Input: lists = [[1,4,5],[1,3,4],[2,6]]
+- Ouput: [1,1,2,3,4,4,5,6]
+"""
+class ListNode:
+    def __init__(self, val= 0, next= None):
+        self.val = val
+        self.next = next 
+    
+def merge_k_lists(lists):
+    result_arr = list()
+    for arr in lists: 
+        while arr: 
+            result_arr.append(arr.val)
+            arr = arr.next
+    result_arr.sort()
+    if not result_arr: 
+        return None 
+    result_node = ListNode(result_arr[0])
+    cur = result_node
+    for val in result_arr[1:]:
+        cur.next = ListNode(val)
+        cur = cur.next 
+    return result_node
 
 
 """Assignment 30: Substring with Concatenation of All Words 
