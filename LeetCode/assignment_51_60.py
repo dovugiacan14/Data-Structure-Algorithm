@@ -1,5 +1,5 @@
 
-"""Assignment 30: N-Queens
+"""Assignment 51: N-Queens
 
 The n-queens puzzle is the problem of placing n queens on an n x n chessboard such that no two queens attack each other.
 Given an integer n, return all distinct solutions to the n-queens puzzle. You may return the answer in any order.
@@ -54,10 +54,112 @@ def solve_n_queens(n):
     return result
 
 def solve_n_queens(n):
-    def solve(row, cols, diag1, diag2, current_solution):
+    def solve(row, columns, diagionals1, diagionals2, board, solutions):
         if row == n: 
+            solutions.append(["".join(row) for row in board])
             return 
-    pass
+        
+        for col in range(n):
+            diag1 = row - col 
+            diag2 = row + col 
+            if col in columns or diag1 in diagionals1 or diag2 in diagionals2: 
+                continue 
 
-coordinates_set = solve_n_queens(4)
-print(coordinates_set)
+            # place the queen 
+            board[row][col] = "Q"
+            columns.add(col)
+            diagionals1.add(diag1)
+            diagionals2.add(diag2)
+
+            # recursive to the next row 
+            solve(row + 1, columns, diagionals1, diagionals2, board, solutions)
+
+            # backtrack 
+            board[row][col] = "."
+            columns.remove(col)
+            diagionals1.remove(diag1)
+            diagionals2.remove(diag2)
+        
+    solutions = []
+    board = [["."]*n for _ in range(n)]
+    solve(0, set(), set(), set(), board, solutions)
+    return solutions
+
+
+"""Assignment 52: N-Queens
+
+The n-queens puzzle is the problem of placing n queens on an n x n chessboard such that no two queens attack each other.
+Given an integer n, return the number of distinct solutions to the n-queens puzzle.
+
+Example 1: 
+- Input:  n = 4 
+- Ouput: 2
+- Explaination: 
+    There exist two distinct solutions to the 4-queens puzzle as shown above.
+"""
+def solve_n_queens(n):
+    def solve(row, columns, diagionals1, diagionals2, board, solutions):
+        if row == n: 
+            solutions.append(["".join(row) for row in board])
+            return 
+        
+        for col in range(n):
+            diag1 = row - col 
+            diag2 = row + col 
+            if col in columns or diag1 in diagionals1 or diag2 in diagionals2: 
+                continue 
+
+            # place the queen 
+            board[row][col] = "Q"
+            columns.add(col)
+            diagionals1.add(diag1)
+            diagionals2.add(diag2)
+
+            # recursive to the next row 
+            solve(row + 1, columns, diagionals1, diagionals2, board, solutions)
+
+            # backtrack 
+            board[row][col] = "."
+            columns.remove(col)
+            diagionals1.remove(diag1)
+            diagionals2.remove(diag2)
+        
+    solutions = []
+    board = [["."]*n for _ in range(n)]
+    solve(0, set(), set(), set(), board, solutions)
+    return len(solutions)
+
+
+"""Assignment 53: Maximum Subarray
+
+Given an integer array nums, find the subarray with the largest sum, and return its sum.
+Example 1: 
+- Input: nums = [-2,1,-3,4,-1,2,1,-5,4]
+- Ouput: 6
+- Explaination: 
+    The subarray [4,-1,2,1] has the largest sum 6.
+"""
+# ĐPT: (O(n^3))
+def max_subarray(nums):
+    result = max(nums)
+    if len(nums) == 1: 
+        return result
+    for i in range(len(nums)): 
+        for j in range(i+1, len(nums)+1):
+            if result < sum(nums[i:j]): 
+                result = sum(nums[i:j]) 
+    return result
+
+# ĐPT: (O(N))
+def max_subarray(nums):
+    max_sum = nums[0]
+    current_sum = 0 
+
+    for num in nums: 
+        current_sum += num 
+        max_sum = max(max_sum, current_sum)
+        if current_sum < 0: 
+            current_sum = 0 
+    return max_sum 
+
+print(max_subarray([-2,1,-3,4,-1,2,1,-5,4]))
