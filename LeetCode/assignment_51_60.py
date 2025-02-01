@@ -204,5 +204,185 @@ def spiral_order(matrix):
             
     return res
 
-result = spiral_order([[1,2,3],[4,5,6],[7,8,9],[10,11,12]])
-print(result)
+"""Assignment 55: Jump Game 
+
+You are given an integer array nums. 
+You are initially positioned at the array's first index, and each element in the array represents your maximum jump length at that position.
+Return true if you can reach the last index, or false otherwise. 
+
+Example 1: 
+- Input: nums = [2,3,1,1,4]
+- Ouput: true 
+- Explanation: Jump 1 step from index 0 to 1, then 3 steps to the last index. 
+
+Example 2: 
+- Input: nums = [3,2,1,0,4]
+- Output: False 
+- Explaination: You will always arrive at index 3 no matter what. Its maximum jump length is 0, which makes it impossible to reach the last index.
+
+Idea: 
+B1: Use "farthest" to save the longest jump you can jump 
+B2: For elem in array: 
+    cur_index > farthest -> you can't jump 
+    else: update farthest 
+B3: if farthest >= len(nums) -> True 
+"""
+def can_jump(nums):
+    farthest = 0 
+    for idx, elm in enumerate(nums):
+        if idx > farthest: 
+            return False 
+        farthest = max(farthest, idx + elm)
+
+        if farthest >= len(nums) - 1: 
+            return True 
+
+
+"""Assignment 56: Merge Intervals  
+
+Given an array of intervals where intervals[i] = [starti, endi], merge all overlapping intervals, 
+and return an array of the non-overlapping intervals that cover all the intervals in the input.
+
+Example 1: 
+- Input: intervals = [[1,3],[2,6],[8,10],[15,18]]
+- Ouput: [[1,6],[8,10],[15,18]]
+- Explaination: Since intervals [1,3] and [2,6] overlap, merge them into [1,6]
+
+Example 2: 
+- Input: intervals = [[1,4],[4,5]]
+- Output: [[1,5]]
+"""
+def merge(intervals):
+    idx = 1
+    intervals= sorted(intervals, key=lambda x: x[0])
+    while True:
+        n_interval = len(intervals)
+        if idx >= n_interval:
+            break 
+        if intervals[idx][0] >= intervals[idx-1][0] and intervals[idx][0] <= intervals[idx-1][1]:
+            if intervals[idx][1] >= intervals[idx-1][1]:
+                intervals[idx-1][1] = intervals[idx][1]
+            del intervals[idx]
+        else: 
+            idx += 1  
+    return intervals
+
+
+"""Assignment 57: Insert Intervals  
+
+You are given an array of non-overlapping intervals where intervals[i] = [starti, endi] represent the start and the end of the ith interval and intervals is sorted in ascending order by starti. 
+You are also given an interval newInterval = [start, end] that represents the start and end of another interval.
+Insert newInterval into intervals such that intervals is still sorted in ascending order by starti and intervals still does not have any overlapping intervals (merge overlapping intervals if necessary).
+
+Return intervals after the insertion.
+Example 1: 
+- Input: intervals = [[1,3],[6,9]], newInterval = [2,5]
+- Ouput: [[1,5],[6,9]]
+- Explaination: Since intervals [1,3] and [2,6] overlap, merge them into [1,6]
+
+Example 2: 
+- Input: intervals = [[1,2],[3,5],[6,7],[8,10],[12,16]], newInterval = [4,8]
+- Output: [[1,2],[3,10],[12,16]]
+- Explaination: Because the new interval [4,8] overlaps with [3,5],[6,7],[8,10].
+"""
+def insert(intervals, newInterval):
+    intervals.append(newInterval)
+    def merge(intervals):
+        idx = 1
+        intervals= sorted(intervals, key=lambda x: x[0])
+        while True:
+            n_interval = len(intervals)
+            if idx >= n_interval:
+                break 
+            if intervals[idx][0] >= intervals[idx-1][0] and intervals[idx][0] <= intervals[idx-1][1]:
+                if intervals[idx][1] >= intervals[idx-1][1]:
+                    intervals[idx-1][1] = intervals[idx][1]
+                del intervals[idx]
+            else: 
+                idx += 1  
+        return intervals
+    result = merge(intervals)
+    return result 
+
+
+"""Assignment 58:  Length of Last Word
+
+Given a string s consisting of words and spaces, return the length of the last word in the string.
+A word is a maximal substring consisting of non-space characters only.
+
+Example 1: 
+- Input: s = "   fly me   to   the moon  "
+- Ouput: 4
+"""
+def lengthOfLastWord(s):
+    word_split = s.split(" ")   # split by space 
+    word_lst = [x for x in word_split if x!= ""]
+    return len(word_lst[-1])
+
+"""Assignment 59: Spiral Matrix II
+
+Given a positive integer n, generate an n x n matrix filled with elements from 1 to n2 in spiral order.
+
+Example 1: 
+- Input: n = 3
+- Ouput: [[1,2,3],[8,9,4],[7,6,5]]
+"""
+def generate_matrix(n): 
+    matrix = [[0] * n for _ in range(n)] 
+    par = 1
+    start_row, end_row = 0, n-1
+    start_col, end_col = 0, n-1
+    while start_row <= end_row and start_col <= end_col: 
+        for i in range(start_col, end_col+1):
+            matrix[start_row][i] = par 
+            par += 1 
+        start_row += 1 
+
+        for i in range(start_row, end_row + 1): 
+            matrix[i][end_col] = par 
+            par += 1 
+        end_col -=1 
+
+        if start_row <= end_row: 
+            for i in range(end_col, start_col - 1, -1): 
+                matrix[end_row][i] = par 
+                par += 1 
+            end_row -= 1 
+
+        if start_col <= end_col: 
+            for i in range(end_row, start_row - 1, -1): 
+                matrix[i][start_col] = par 
+                par += 1 
+            start_col += 1 
+        
+    return matrix 
+
+
+"""Assignment 60: Permutation Sequence
+
+The set [1, 2, 3, ..., n] contains a total of n! unique permutations.
+By listing and labeling all of the permutations in order, we get the following sequence for n = 3:
+    "123"
+    "132"
+    "213"
+    "231"
+    "312"
+    "321"
+Given n and k, return the kth permutation sequence.
+
+Example 1: 
+- Input: n = 3, k = 3
+- Ouput: "213"
+"""
+from itertools import permutations
+
+def get_permutate(n, k): 
+    arr = [str(i) for i in range(1, n + 1)]
+    permute = [] 
+    for word in permutations(arr):
+        word_str = ''.join(word)
+        permute.append(word_str)
+    return permute[k-1]
+
+res= get_permutate(4,9)
+print(res)
