@@ -96,5 +96,16 @@ def set_zeroes(matrix):
             matrix[i][col] = 0
     return matrix
 
-matrix = [[1,1,1],[1,0,1],[1,1,1]]
-processed_matrix = set_zeroes(matrix)
+
+"""Assignment 77: Combinations
+
+Given two integers n and k, return all possible combinations of k numbers chosen from the range [1, n].
+You may return the answer in any order.
+
+Example 1: 
+Input: Input: n = 4, k = 2
+Output: [[1,2],[1,3],[1,4],[2,3],[2,4],[3,4]]
+"""
+def combinations(n, k):
+    
+    pass
