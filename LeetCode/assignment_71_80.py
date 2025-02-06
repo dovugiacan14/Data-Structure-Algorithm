@@ -96,6 +96,75 @@ def set_zeroes(matrix):
             matrix[i][col] = 0
     return matrix
 
+"""Assignment 74: Search a 2D Matrix
+
+You are given an m x n integer matrix matrix with the following two properties:
+
+Each row is sorted in non-decreasing order.
+The first integer of each row is greater than the last integer of the previous row.
+Given an integer target, return true if target is in matrix or false otherwise.
+
+You must write a solution in O(log(m * n)) time complexity.
+
+- Input: matrix = [[1,3,5,7],[10,11,16,20],[23,30,34,60]], target = 3 
+- Output: True 
+"""
+def search_matrix(matrix, target):
+    n_row = len(matrix)
+    i = 0 
+    while i < n_row: 
+        if target > matrix[i][-1]: 
+            i += 1 
+        else: 
+            if target in matrix[i]: 
+                return True 
+            else: 
+                break 
+    return False 
+
+"""Assignment 76: Minimum Window Substring 
+
+Given two strings s and t of lengths m and n respectively, return the minimum window 
+substring of s such that every character in t (including duplicates) is included in the window. 
+If there is no such substring, return the empty string "".
+
+The testcases will be generated such that the answer is unique.
+
+- Input: s = "ADOBECODEBANC", t = "ABC"
+- Output: "BANC"
+- Explaination: The minimum window substring "BANC" includes 'A', 'B', and 'C' from string t.
+"""
+from collections import Counter
+def minWindow(s, t): 
+    if not s or not t: 
+        return ""
+    t_count = Counter(t)
+    window_count = {}
+
+    left = 0 
+    min_len = float("inf")
+    min_substr = ""
+    required_chars = len(t_count)
+    formed_chars = 0 
+
+    for right in range(len(s)):
+        char = s[right]
+        window_count[char] = window_count.get(char, 0) + 1 
+        if char in t_count and window_count[char] == t_count[char]:
+            formed_chars += 1 
+        
+        while left <= right and formed_chars == required_chars: 
+            if right - left + 1 < min_len:
+                min_len = right - left + 1 
+                min_substr = s[left : right + 1]
+            
+            left_char = s[left]
+            window_count[left_char] -= 1 
+            if left_char in t_count and window_count[left_char] <  t_count[left_char]: 
+                formed_chars -= 1 
+            left += 1 
+    return min_substr
+
 
 """Assignment 77: Combinations
 
@@ -107,5 +176,4 @@ Input: Input: n = 4, k = 2
 Output: [[1,2],[1,3],[1,4],[2,3],[2,4],[3,4]]
 """
 def combinations(n, k):
-    
     pass
