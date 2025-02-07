@@ -172,8 +172,47 @@ Given two integers n and k, return all possible combinations of k numbers chosen
 You may return the answer in any order.
 
 Example 1: 
-Input: Input: n = 4, k = 2
+Input: n = 4, k = 2
 Output: [[1,2],[1,3],[1,4],[2,3],[2,4],[3,4]]
 """
 def combinations(n, k):
-    pass
+    def backtrack(start, sub_arr): 
+        if len(sub_arr) == k: 
+            result.append(sub_arr[:])
+            return 
+        
+        for i in range(start, n+1): 
+            sub_arr.append(i)
+            backtrack(i + 1, sub_arr)
+            sub_arr.pop()
+
+    result = []
+    backtrack(1, [])
+    return result
+
+
+"""Assignment 78: Subsets
+
+Given an integer array nums of unique elements, return all possible subsets (the power set).
+The solution set must not contain duplicate subsets. Return the solution in any order.
+
+Example 1: 
+Input: [1,2,3]
+Output:[[],[1],[2],[1,2],[3],[1,3],[2,3],[1,2,3]]
+"""
+def subsets(nums):
+    def backtrack(pos, subset):
+        result.append(subset[:])
+        
+        if len(subset) == len(nums):
+            return 
+
+        for i in range(pos, len(nums)):
+            subset.append(nums[i]) 
+            backtrack(i + 1, subset)
+            subset.pop()
+    result = []
+    backtrack(0, [])
+    return result 
+
+print(subsets([1,2,3]))
