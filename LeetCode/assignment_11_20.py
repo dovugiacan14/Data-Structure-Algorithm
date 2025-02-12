@@ -17,7 +17,7 @@ def maxArea(height):
     left = 0
     right = len(height) - 1
     max_area = 0
-    while left < height:
+    while left < right:
         cur_area = min(height[left], height[right]) * (right - left)
         max_area = max(max_area, cur_area)
         if height[left] < height[right]:
@@ -171,8 +171,6 @@ Example 1:
 - Ouput: "fl"
 
 """
-
-
 def longestCommonPrefix(strs):
     strs = sorted(strs)
     head = strs[0]
