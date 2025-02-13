@@ -139,5 +139,72 @@ def largest_rectangle(heights):
         stack.append(i)
     return max_area
 
-heights = [2,1,5,6,2,3]
-print(largest_rectangle(heights))
+# heights = [2,1,5,6,2,3]
+# print(largest_rectangle(heights))
+
+"""Assignment 85: Maximal Rectangle 
+
+Given a rows x cols binary matrix filled with 0's and 1's, find the largest rectangle containing only 1's and return its area.
+Example 1: 
+- Input: matrix = [["1","0","1","0","0"],["1","0","1","1","1"],["1","1","1","1","1"],["1","0","0","1","0"]]
+- Output: 6
+- Explanation: The above is a histogram where width of each bar is 1.
+The largest rectangle is shown in the red area, which has an area = 10 units.
+
+Example 2: 
+- Input: matrix = [["0"]]
+- Output: 0
+
+Idea: 
+    1. Iterate through each row of the matrix and construct a "heights array" representing a histogram. 
+    2. Treat each row as a histogram and use "Largest Rectangle in Histogram" (as 84) to find the largest rectangle.
+    3. Repeat for all rows while keeping track of the maximun area. 
+Approach: 
+    matrix = [                             
+        ["1","0","1","0","0"],
+        ["1","0","1","1","1"],
+        ["1","1","1","1","1"],     
+        ["1","0","0","1","0"]
+    ]
+ ==>     
+    heights = [                             
+        ["1","0","1","0","0"],
+        ["2","0","2","1","1"],
+        ["3","1","3","2","2"],     
+        ["4","0","0","3","0"]
+    ]
+"""
+def maximal_rectangle(matrix): 
+    if not matrix or not matrix[0]:
+        return 0 
+    
+    n_cols = len(matrix[0])
+    heights = [0] * n_cols  # initialize zero-matrix 
+    result = 0 
+
+    def largest_rectangle(heights):
+        stack = []
+        max_area = 0 
+        heights.append(0)  # padding zero
+        for i in range(len(heights)): 
+            while stack and heights[i] < heights[stack[-1]]: 
+                height = heights[stack.pop()]
+                width = i if not stack else i - stack[-1] - 1 
+                max_area = max(max_area , height * width)
+            stack.append(i)
+        return max_area
+    for row in matrix: 
+        for col in range(n_cols): 
+            heights[col] = heights[col] + 1 if row[col] == "1" else 0 
+        result = max(result, largest_rectangle(heights))
+
+    return result 
+
+matrix = [                             
+        ["1","0","1","0","0"],
+        ["1","0","1","1","1"],
+        ["1","1","1","1","1"],     
+        ["1","0","0","1","0"]
+    ]
+
+print(maximal_rectangle(matrix))
