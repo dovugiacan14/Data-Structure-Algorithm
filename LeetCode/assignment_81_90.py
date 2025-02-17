@@ -200,7 +200,7 @@ def maximal_rectangle(matrix):
 
     return result 
 
-"""Assignment 84: Partition List 
+"""Assignment 86: Partition List 
 
 Given the head of a linked list and a value x, partition it such that all nodes less than x come before nodes greater than or equal to x.
 You should preserve the original relative order of the nodes in each of the two partitions.
@@ -241,3 +241,87 @@ def partition(head, x):
         cur.next = ListNode(val)
         cur = cur.next 
     return new_head
+
+"""Assignment 88: Partition List 
+
+You are given two integer arrays nums1 and nums2, sorted in non-decreasing order, and two integers m and n, representing the number of elements in nums1 and nums2 respectively.
+Merge nums1 and nums2 into a single array sorted in non-decreasing order.
+The final sorted array should not be returned by the function, but instead be stored inside the array nums1.
+To accommodate this, nums1 has a length of m + n, where the first m elements denote the elements that should be merged, and the last n elements are set to 0 and should be ignored. nums2 has a length of n.
+
+- Input: nums1 = [1,2,3,0,0,0], m = 3, nums2 = [2,5,6], n = 3
+- Output: nums1= [1,2,2,3,5,6]
+
+"""
+def merge(nums1, m, nums2, n): 
+    del nums1[m:]
+    nums1.extend(nums2)
+    return nums1.sort()
+
+"""Assignment 89: Gray Code 
+
+An n-bit gray code sequence is a sequence of 2n integers where:
+    + Every integer is in the inclusive range [0, 2n - 1],
+    + The first integer is 0,
+    + An integer appears no more than once in the sequence,
+    + The binary representation of every pair of adjacent integers differs by exactly one bit, and
+    + The binary representation of the first and last integers differs by exactly one bit.
+Given an integer n, return any valid n-bit gray code sequence.
+
+- Input: n = 2 
+- Output: [0,1,3,2]
+- Explaination: 
+The binary representation of [0,1,3,2] is [00,01,11,10].
+- 00 and 01 differ by one bit
+- 01 and 11 differ by one bit
+- 11 and 10 differ by one bit
+- 10 and 00 differ by one bit
+[0,2,3,1] is also a valid gray code sequence, whose binary representation is [00,10,11,01].
+- 00 and 10 differ by one bit
+- 10 and 11 differ by one bit
+- 11 and 01 differ by one bit
+- 01 and 00 differ by one bit
+
+"""
+def gray_code(n): 
+    result = 0 
+    for i in range(n): 
+        result += [x | (1 << i) for x in reversed(result)]
+    return result 
+
+def gray_code(n): 
+    return [i ^ (i >> 1) for i in range(1 << n)]
+
+
+"""Assignment 90: Subsets II  
+
+Given an integer array nums that may contain duplicates, return all possible 
+subsets (the power set).
+
+The solution set must not contain duplicate subsets. Return the solution in any order.
+
+- Input: nums = [1,2,2]
+- Output: [[],[1],[1,2],[1,2,2],[2],[2,2]]
+
+"""
+def subset_version2(nums): 
+    def backtrack(pos, subset): 
+        result.append(subset[:])
+        
+        if len(subset) == len(nums): 
+            return 
+        
+        for i in range(pos, len(nums)):
+            if i > pos and nums[i] == nums[i - 1]: 
+                continue 
+            subset.append(nums[i])
+            backtrack(i + 1, subset)
+            subset.pop()
+
+    nums.sort()
+    result = []
+    backtrack(0, [])
+    return result     
+
+nums = [4,4,4,1,4]
+print(subset_version2(nums))
