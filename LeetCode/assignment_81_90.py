@@ -200,11 +200,44 @@ def maximal_rectangle(matrix):
 
     return result 
 
-matrix = [                             
-        ["1","0","1","0","0"],
-        ["1","0","1","1","1"],
-        ["1","1","1","1","1"],     
-        ["1","0","0","1","0"]
-    ]
+"""Assignment 84: Partition List 
 
-print(maximal_rectangle(matrix))
+Given the head of a linked list and a value x, partition it such that all nodes less than x come before nodes greater than or equal to x.
+You should preserve the original relative order of the nodes in each of the two partitions.
+
+Example 1: 
+- Input: head = [1,4,3,2,5,2], x = 3
+- Output: [1,2,2,4,3,5]
+
+"""
+
+class ListNode(object):
+    def __init__(self, val=0, next=None):
+        self.val = val 
+        self.next = next  
+
+def partition(head, x): 
+    # convert to list 
+    tmp_arr = []
+    if not head: 
+        return None 
+    while head: 
+        tmp_arr.append(head.val)
+        head = head.next
+
+    # process 
+    shorter_x, larger_x = [], []
+    for item in tmp_arr: 
+        if item < x: 
+            shorter_x.append(item)
+        else:
+            larger_x.append(item)
+    result_arr = shorter_x + larger_x
+
+    # convert to ListNode 
+    new_head = ListNode(result_arr[0])
+    cur = new_head 
+    for val in result_arr[1:]: 
+        cur.next = ListNode(val)
+        cur = cur.next 
+    return new_head
