@@ -274,6 +274,38 @@ def subsets(nums):
     backtrack(0, [])
     return result 
 
+
+"""Assignment 90: Subsets II  
+
+Given an integer array nums that may contain duplicates, return all possible 
+subsets (the power set).
+
+The solution set must not contain duplicate subsets. Return the solution in any order.
+
+- Input: nums = [1,2,2]
+- Output: [[],[1],[1,2],[1,2,2],[2],[2,2]]
+
+"""
+
+def subset_version2(nums): 
+    def backtrack(pos, subset): 
+        result.append(subset[:])
+        
+        if len(subset) == len(nums): 
+            return 
+        
+        for i in range(pos, len(nums)):
+            if i > pos and nums[i] == nums[i - 1]: 
+                continue 
+            subset.append(nums[i])
+            backtrack(i + 1, subset)
+            subset.pop()
+
+    nums.sort()
+    result = []
+    backtrack(0, [])
+    return result  
+
 if __name__ == "__main__": 
     # BT1 
     res = generate_string(1, 4, "", [])
