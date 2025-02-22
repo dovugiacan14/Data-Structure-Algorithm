@@ -183,6 +183,27 @@ Example 2:
 - Input: root = [1,2,3,4,5,null,8,null,null,6,7,9]
 - Output: [4,2,6,5,7,1,3,9,8]
 
+**General Rules: 
+The input list represents the tree in level-order traversal, meaning it is arranged level by level 
+from top -> bottom, left -> right 
+    + root[0] is the root. 
+    + for each root[i]:
+        ++ The left child is at root[2*i + 1]
+        ++ The right child is at root[2*i + 2]
+    + null indicates that the node does not exist. 
+
+** Method 1: Use Recursive 
+B1: If root is None -> Return []
+B2: Call recursive with root.left and get the value of left child node  -> get root.val
+B3: Call recursive with root.right and get the value of right child node -> get root.val 
+B4: Return the list follow the order Left -> Root -> Right.
+
+**Method 2: Use Stack 
+B1: Traverse all the left branches and push them onto the stack
+B2: Retrieve the value of the top node from the stack (root node)
+B3: Continue traversing the right branch 
+B4: Repeat until the stack is empty and there are no more nodes to traverse. 
+
 """
 class TreeNode(object):
     def __init__(self, val= 0, left= None, right= None): 
@@ -190,6 +211,7 @@ class TreeNode(object):
         self.left = left
         self.right = right 
 
+# Use Recursive 
 def inorder_traversal(root): 
     """
     :type root: Optional[TreeNode]
@@ -198,5 +220,81 @@ def inorder_traversal(root):
     if not root: 
         return []
     
+    left_subtree = inorder_traversal(root.left)
+    current_value = [root.val]
+    right_subtree = inorder_traversal(root.right)
     
+    return left_subtree + current_value + right_subtree
+    
+# Use Stack 
+def inorder_traversal_iter(root):
+    stack = []
+    result = []
+    current_node = root 
+
+    while current_node or stack: 
+        # 1. Push all left node to stack
+        while current_node: 
+            stack.append(current_node)
+            current_node = current_node.left 
+
+        # 2. Get the node on the top of the stack 
+        current_node = stack.pop()
+        result.append(current_node.val)
+
+        # 3. Traversal the right branch 
+        current_node = current_node.right 
+
+    return result  
+
+
+"""Assignment 95: Unique Binary Search Trees II
+Given an integer n, return all the structurally unique BST's (binary search trees), which has exactly n nodes of unique values from 1 to n. 
+Return the answer in any order.
+
+Example 1: 
+    - Input: n = 3
+    - Output: [[1,null,2,null,3],[1,null,3,2],[2,1,3],[3,1,null,null,2],[3,2,null,1]]
+
+Idea: 
+    - Create a recursive function to generate all BST from start to end 
+"""
+class TreeNode(object):
+    def __init__(self, val, left, right): 
+        self.val = val 
+        self.left = left 
+        self.right = right 
+
+def generate_trees(n):
+    def generate_subtrees(start, end): 
+        if start > end: 
+            return [None]
+        
+        all_trees = []
+        for i in range(start, end + 1): 
+            left_trees = generate_subtrees(start, i -1)   # left node 
+            right_trees = generate_subtrees(i + 1, end)   # right node 
+
+            for left in left_trees: 
+                for right in right_trees: 
+                    root = TreeNode(i, left, right)
+                    all_trees.append(root)
+        return all_trees
+    
+    if n == 0: return []
+    return generate_subtrees(1, n)
+
+
+# Helper function to print the tree in preorder traversal
+def preorder_traversal(root):
+    if not root:
+        return "None"
+    return f"{root.val}, {preorder_traversal(root.left)}, {preorder_traversal(root.right)}"
+
+# Test with n = 3
+trees = generate_trees(3)
+
+# Print all generated trees
+for i, tree in enumerate(trees, 1):
+    print(f"Tree {i}: {preorder_traversal(tree)}")
         
