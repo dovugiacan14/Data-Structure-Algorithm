@@ -284,17 +284,63 @@ def generate_trees(n):
     if n == 0: return []
     return generate_subtrees(1, n)
 
+# # Helper function to print the tree in preorder traversal
+# def preorder_traversal(root):
+#     if not root:
+#         return "None"
+#     return f"{root.val}, {preorder_traversal(root.left)}, {preorder_traversal(root.right)}"
 
-# Helper function to print the tree in preorder traversal
-def preorder_traversal(root):
-    if not root:
-        return "None"
-    return f"{root.val}, {preorder_traversal(root.left)}, {preorder_traversal(root.right)}"
+# # Test with n = 3
+# trees = generate_trees(3)
 
-# Test with n = 3
-trees = generate_trees(3)
+# # Print all generated trees
+# for i, tree in enumerate(trees, 1):
+#     print(f"Tree {i}: {preorder_traversal(tree)}")
 
-# Print all generated trees
-for i, tree in enumerate(trees, 1):
-    print(f"Tree {i}: {preorder_traversal(tree)}")
+"""Assignment 96: Unique Binary Search Trees 
+Given an integer n, return the number of structurally unique BST's (binary search trees) which has exactly n nodes of unique values from 1 to n.
+
+Example 1: 
+    - Input: n = 3
+    - Output: 5
+
+Idea: 
+    - Create a recursive function to generate all BST from start to end 
+"""
+def unique_binary_tree(n):
+    def generate_tree(start, end):
+        if start > end: 
+            return [None]
+        
+        all_trees = []
+        for i in range(start, end + 1): 
+            left_trees = generate_tree(start, i - 1)
+            right_trees = generate_tree(i + 1, end)
+
+            for left in left_trees: 
+                for right in right_trees: 
+                    root = TreeNode(i, left, right)
+                    all_trees.append(root)
+        return all_trees
+
+    if n == 0: 
+        return 0 
+    return len(generate_tree(1, n))
+
+
+def unique_binary_tree(n):
+    """
+    :type n: int
+    :rtype: int
+    """
+
+    dp = [0] * (n + 1)
+    dp[0], dp[1] = 1, 1  # Với 0 hoặc 1 node thì chỉ có 1 cách tạo cây BST
+
+    for nodes in range(2, n + 1):
+        for root in range(1, nodes + 1):
+            dp[nodes] += dp[root - 1] * dp[nodes - root]
+
+    return dp[n]
+    
         
