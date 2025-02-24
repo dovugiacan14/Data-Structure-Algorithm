@@ -343,4 +343,53 @@ def unique_binary_tree(n):
 
     return dp[n]
     
+"""Assignment 97: Interleaving String 
+Given strings s1, s2, and s3, find whether s3 is formed by an interleaving of s1 and s2.
+An interleaving of two strings s and t is a configuration where s and t are divided into n and m 
+substrings respectively, such that:
+    s = s1 + s2 + ... + sn
+    t = t1 + t2 + ... + tm
+    |n - m| <= 1
+The interleaving is s1 + t1 + s2 + t2 + s3 + t3 + ... or t1 + s1 + t2 + s2 + t3 + s3 + ...
+Note: a + b is the concatenation of strings a and b.
+
+Example 1: 
+    - Input: s1 = "aabcc", s2 = "dbbca", s3 = "aadbbcbcac"
+    - Output: True
+
+Example 2: 
+    - Input: s1 = "aabcc", s2 = "dbbca", s3 = "aadbbbaccc"
+    - Output: false
+"""
+import queue 
+
+def interleaving_string(s1, s2, s3): 
+    if len(s1) + len(s2) != len(s3): 
+        return False 
+
+    q = queue.Queue()
+    q.put((0,0))
+    visited = set()
+    while not q.empty(): 
+        i, j = q.get()
+
+        if i == len(s1) and j == len(s2): 
+            return True    # done to visit s1 and s2, s3 is valid 
+        
+        if i < len(s1) and s1[i] == s3[i + j] and (i + 1, j) not in visited: 
+            q.put((i + 1, j))
+            visited.add((i + 1, j))
+        
+        if j < len(s2) and s2[j] == s3[i + j] and (i, j + 1) not in visited: 
+            q.put((i, j + 1))
+            visited.add((i, j + 1))
+    return False  
+    
+s1 = "aabcc" 
+s2 = "dbbca"
+s3 = "aadbbcbcac"
+print(interleaving_string(s1, s2, s3))
+
+
+    
         
