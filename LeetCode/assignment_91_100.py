@@ -42,51 +42,54 @@ Example 3:
 
 """
 
-# Use Brute-Force solution --> Too Long 
-def decode_ways(s): 
+
+# Use Brute-Force solution --> Too Long
+def decode_ways(s):
     def generate_subsets(start, path):
-        if start == len(s): # when split all string s 
+        if start == len(s):  # when split all string s
             subsets.append(path[:])
-            return  
-        
-        for i in range(start + 1, len(s) + 1): 
-            # only keep partition has lenght < 2 
-            if i - start > 2: 
-                break 
+            return
+
+        for i in range(start + 1, len(s) + 1):
+            # only keep partition has lenght < 2
+            if i - start > 2:
+                break
             path.append(s[start:i])
             generate_subsets(i, path)
             path.pop()
 
     subsets = []
     generate_subsets(0, [])
-    
-    valid_ways = 0 
+
+    valid_ways = 0
     valid_string = [str(i) for i in range(1, 27)]
-    for ways in subsets: 
-        if set(ways).issubset(set(valid_string)): 
+    for ways in subsets:
+        if set(ways).issubset(set(valid_string)):
             valid_ways += 1
-    
+
     return valid_ways
 
-# Use Dynamic-Programing 
-def decode_ways(s): 
-    if not s or s[0] == '0': 
-        return 0 
-    
+
+# Use Dynamic-Programing
+def decode_ways(s):
+    if not s or s[0] == "0":
+        return 0
+
     n = len(s)
     dp = [0] * (n + 1)
-    dp[0], dp[1] = 1, 1     # setting base case 
+    dp[0], dp[1] = 1, 1  # setting base case
 
-    for i in range(2, n + 1): 
+    for i in range(2, n + 1):
         one_digit = int(s[i - 1])
-        two_digit = int(s[i -2 : i])
+        two_digit = int(s[i - 2 : i])
 
-        if 1 <= one_digit <= 9: 
-            dp[i] += dp[i -1]
-        
-        if 10 <= two_digit <= 26: 
-            dp[i] += dp[i-2]
+        if 1 <= one_digit <= 9:
+            dp[i] += dp[i - 1]
+
+        if 10 <= two_digit <= 26:
+            dp[i] += dp[i - 2]
     return dp[n]
+
 
 s = "11106"
 print(decode_ways(s))
@@ -101,10 +104,12 @@ The solution set must not contain duplicate subsets. Return the solution in any 
 - Input: head = [1,2,3,4,5], left = 2, right = 4
 - Output: [1,4,3,2,5]
 """
+
+
 class ListNode(object):
-    def __init__(self, val=0, next= None): 
-        self.val = val 
-        self.next = next 
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
 
 
 def reverseBetween(head: ListNode, left: int, right: int) -> ListNode:
@@ -129,6 +134,7 @@ def reverseBetween(head: ListNode, left: int, right: int) -> ListNode:
         prev.next = temp  # Cập nhật node đầu của đoạn bị đảo
     return dummy.next
 
+
 """Assignment 93: Restore IP Addresses
 
 A valid IP address consists of exactly four integers separated by single dots. Each integer is between 0 and 255 (inclusive) and cannot have leading zeros.
@@ -144,32 +150,35 @@ Idea:
 - Split s into 4 part 
 - Check each part is valid ? If invalid then backtrack to previous step
 """
-def restore_ip_address(s): 
+
+
+def restore_ip_address(s):
     result = []
-    if len(s) < 3 or len(s) > 12: 
+    if len(s) < 3 or len(s) > 12:
         return result
 
-    def backtrack(start, path): 
-        # if enough 4 part or reach the length s 
-        if len(path) == 4 and start == len(s): 
+    def backtrack(start, path):
+        # if enough 4 part or reach the length s
+        if len(path) == 4 and start == len(s):
             result.append(".".join(path))
-            return 
-        
-        if len(path) == 4 or start == len(s): 
-            return 
-        
-        for length in range(1,4): 
-            if start + length > len(s):  # Tránh lỗi IndexError
-                break  
-            part = s[start:start + length]
+            return
 
-            # check condition 
-            if (part.startswith('0') and len(part) > 1) or int(part) > 255: 
-                continue 
+        if len(path) == 4 or start == len(s):
+            return
+
+        for length in range(1, 4):
+            if start + length > len(s):  # Tránh lỗi IndexError
+                break
+            part = s[start : start + length]
+
+            # check condition
+            if (part.startswith("0") and len(part) > 1) or int(part) > 255:
+                continue
             backtrack(start + length, path + [part])
 
     backtrack(0, [])
     return result
+
 
 """Assignment 94: Binary Tree Inorder Traversal
 
@@ -205,47 +214,51 @@ B3: Continue traversing the right branch
 B4: Repeat until the stack is empty and there are no more nodes to traverse. 
 
 """
-class TreeNode(object):
-    def __init__(self, val= 0, left= None, right= None): 
-        self.val = val 
-        self.left = left
-        self.right = right 
 
-# Use Recursive 
-def inorder_traversal(root): 
+
+class TreeNode(object):
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+
+# Use Recursive
+def inorder_traversal(root):
     """
     :type root: Optional[TreeNode]
     :rtype: List[int]
     """
-    if not root: 
+    if not root:
         return []
-    
+
     left_subtree = inorder_traversal(root.left)
     current_value = [root.val]
     right_subtree = inorder_traversal(root.right)
-    
+
     return left_subtree + current_value + right_subtree
-    
-# Use Stack 
+
+
+# Use Stack
 def inorder_traversal_iter(root):
     stack = []
     result = []
-    current_node = root 
+    current_node = root
 
-    while current_node or stack: 
+    while current_node or stack:
         # 1. Push all left node to stack
-        while current_node: 
+        while current_node:
             stack.append(current_node)
-            current_node = current_node.left 
+            current_node = current_node.left
 
-        # 2. Get the node on the top of the stack 
+        # 2. Get the node on the top of the stack
         current_node = stack.pop()
         result.append(current_node.val)
 
-        # 3. Traversal the right branch 
-        current_node = current_node.right 
+        # 3. Traversal the right branch
+        current_node = current_node.right
 
-    return result  
+    return result
 
 
 """Assignment 95: Unique Binary Search Trees II
@@ -259,30 +272,35 @@ Example 1:
 Idea: 
     - Create a recursive function to generate all BST from start to end 
 """
+
+
 class TreeNode(object):
-    def __init__(self, val, left, right): 
-        self.val = val 
-        self.left = left 
-        self.right = right 
+    def __init__(self, val, left, right):
+        self.val = val
+        self.left = left
+        self.right = right
+
 
 def generate_trees(n):
-    def generate_subtrees(start, end): 
-        if start > end: 
+    def generate_subtrees(start, end):
+        if start > end:
             return [None]
-        
-        all_trees = []
-        for i in range(start, end + 1): 
-            left_trees = generate_subtrees(start, i -1)   # left node 
-            right_trees = generate_subtrees(i + 1, end)   # right node 
 
-            for left in left_trees: 
-                for right in right_trees: 
+        all_trees = []
+        for i in range(start, end + 1):
+            left_trees = generate_subtrees(start, i - 1)  # left node
+            right_trees = generate_subtrees(i + 1, end)  # right node
+
+            for left in left_trees:
+                for right in right_trees:
                     root = TreeNode(i, left, right)
                     all_trees.append(root)
         return all_trees
-    
-    if n == 0: return []
+
+    if n == 0:
+        return []
     return generate_subtrees(1, n)
+
 
 # # Helper function to print the tree in preorder traversal
 # def preorder_traversal(root):
@@ -307,24 +325,26 @@ Example 1:
 Idea: 
     - Create a recursive function to generate all BST from start to end 
 """
+
+
 def unique_binary_tree(n):
     def generate_tree(start, end):
-        if start > end: 
+        if start > end:
             return [None]
-        
+
         all_trees = []
-        for i in range(start, end + 1): 
+        for i in range(start, end + 1):
             left_trees = generate_tree(start, i - 1)
             right_trees = generate_tree(i + 1, end)
 
-            for left in left_trees: 
-                for right in right_trees: 
+            for left in left_trees:
+                for right in right_trees:
                     root = TreeNode(i, left, right)
                     all_trees.append(root)
         return all_trees
 
-    if n == 0: 
-        return 0 
+    if n == 0:
+        return 0
     return len(generate_tree(1, n))
 
 
@@ -342,7 +362,8 @@ def unique_binary_tree(n):
             dp[nodes] += dp[root - 1] * dp[nodes - root]
 
     return dp[n]
-    
+
+
 """Assignment 97: Interleaving String 
 Given strings s1, s2, and s3, find whether s3 is formed by an interleaving of s1 and s2.
 An interleaving of two strings s and t is a configuration where s and t are divided into n and m 
@@ -361,35 +382,78 @@ Example 2:
     - Input: s1 = "aabcc", s2 = "dbbca", s3 = "aadbbbaccc"
     - Output: false
 """
-import queue 
+import queue
 
-def interleaving_string(s1, s2, s3): 
-    if len(s1) + len(s2) != len(s3): 
-        return False 
+
+def interleaving_string(s1, s2, s3):
+    if len(s1) + len(s2) != len(s3):
+        return False
 
     q = queue.Queue()
-    q.put((0,0))
+    q.put((0, 0))
     visited = set()
-    while not q.empty(): 
+    while not q.empty():
         i, j = q.get()
 
-        if i == len(s1) and j == len(s2): 
-            return True    # done to visit s1 and s2, s3 is valid 
-        
-        if i < len(s1) and s1[i] == s3[i + j] and (i + 1, j) not in visited: 
+        if i == len(s1) and j == len(s2):
+            return True  # done to visit s1 and s2, s3 is valid
+
+        if i < len(s1) and s1[i] == s3[i + j] and (i + 1, j) not in visited:
             q.put((i + 1, j))
             visited.add((i + 1, j))
-        
-        if j < len(s2) and s2[j] == s3[i + j] and (i, j + 1) not in visited: 
+
+        if j < len(s2) and s2[j] == s3[i + j] and (i, j + 1) not in visited:
             q.put((i, j + 1))
             visited.add((i, j + 1))
-    return False  
-    
-s1 = "aabcc" 
+    return False
+
+
+s1 = "aabcc"
 s2 = "dbbca"
 s3 = "aadbbcbcac"
 print(interleaving_string(s1, s2, s3))
 
+"""Assignment 98: Validate Binary Search Tree 
+Given the root of a binary tree, determine if it is a valid binary search tree (BST).
+A valid BST is defined as follows:
 
-    
-        
+    + The left subtree of a node contains only nodes with keys less than the node's key.
+    + The right subtree of a node contains only nodes with keys greater than the node's key.
+    + Both the left and right subtrees must also be binary search trees.
+
+Example 1: 
+    - Input: root = [2,1,3]
+    - Output: True
+
+Example 2: 
+    - Input: root = [5,1,4,null,null,3,6]
+    - Output: False
+"""
+
+
+class TreeNode(object):
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+
+def is_binary_search_tree(root):
+    if not root:
+        return True
+
+    def check(node, min_val, max_val):
+        if not node:
+            return True
+
+        if not (min_val < node.val < max_val):
+            return False
+
+        return check(node.left, min_val, node.val) and check(
+            node.right, node.val, max_val
+        )
+
+    # min_val = float('-inf')
+    # max_val = float('inf')
+    # result = check(root, min_val, max_val)
+    return check(root, float("-inf"), float("inf"))
