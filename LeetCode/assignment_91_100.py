@@ -477,7 +477,7 @@ class TreeNode(object):
         self.left = left 
         self.right = right 
 
-def recover_tree(self, root): 
+def recover_tree(root): 
     """
     :type root: Optional[TreeNode]
     :rtype: None Do not return anything, modify root in-place instead.
@@ -506,3 +506,54 @@ def recover_tree(self, root):
     # swap two errors node 
     if first and second: 
         first.val, second.val = second.val, first.val  
+
+"""Assignment 100: Recover Binary Search Tree 
+
+Given the roots of two binary trees p and q, write a function to check if they are the same or not.
+Two binary trees are considered the same if they are structurally identical, and the nodes have the same value.
+
+Example 1: 
+    - Input: p = [1,2,3], q = [1,2,3]
+    - Output: True
+
+Example 2: 
+    - Input: p = [1,2], q = [1,null,2]
+    - Output: False
+
+"""
+class TreeNode(object): 
+    def __init__(self, val= 0, left= None, right= None): 
+        self.val = val
+        self.left = left 
+        self.right = right 
+    
+def is_sametree(p, q):
+    def inorder_traversal(root): 
+        stack = []
+        result = []
+        current_node = root
+
+        while current_node or stack:
+            while current_node: 
+                stack.append(current_node)
+                current_node = current_node.left 
+        
+            current_node = stack.pop()
+            result.append(current_node.val)
+
+            current_node = current_node.right
+
+        return result 
+    
+    p_traversaled = inorder_traversal(p)
+    q_traversaled = inorder_traversal(q)
+    return p_traversaled == q_traversaled
+
+def isSameTree(p, q): 
+    if not p and not q: 
+        return True 
+    
+    if not p or not q or p.val != q.val: 
+        return False 
+    
+    return isSameTree(p.left, q.left) and isSameTree(p.right, q.right)
