@@ -255,3 +255,39 @@ class Solution:
             return root
 
         return helper(0, len(inorder) - 1)
+
+"""Assignment 107: Binary Tree Level Order Traversal II
+
+Given the root of a binary tree, return the bottom-up level order traversal of its nodes' values. (i.e., from left to right, level by level from leaf to root).
+
+Example 1: 
+    - Input: root = [3,9,20,null,null,15,7]
+    - Output: [[15,7],[9,20],[3]]
+
+"""
+class TreeNode(object):
+    def __init__(self, val= 0, left= None, right= None): 
+        self.val = val 
+        self.left = left 
+        self.right = right 
+
+def level_order_traversal(root):
+    if not root: 
+        return []
+    
+    queue = deque([root])
+    result = []
+    while queue: 
+        level_size = len(queue)
+        level_nodes = []
+        for _ in range(level_size): 
+            node = queue.popleft()
+            level_nodes.append(node.val)
+
+            if node.left: 
+                queue.append(node.left)
+            if node.right: 
+                queue.append(node.right)
+        result.insert(0, level_nodes)
+
+    return result 
