@@ -14,8 +14,6 @@ Example 2:
     - Output:5 
 
 """
-
-
 class TreeNode(object):
     def __init__(self, val=0, left=None, right=None):
         self.val = val
@@ -58,8 +56,6 @@ Example 2:
     - Output: False 
 
 """
-
-
 def has_path_sum(root, targetSum):
     if not root:
         return False
@@ -69,3 +65,41 @@ def has_path_sum(root, targetSum):
         return targetSum == 0
 
     return has_path_sum(root.left, targetSum) or has_path_sum(root.right, targetSum)
+
+"""Assignment 113: Path Sum II
+
+Given the root of a binary tree and an integer targetSum, return all root-to-leaf paths where the sum of the node values in the path equals targetSum. 
+Each path should be returned as a list of the node values, not node references.
+A root-to-leaf path is a path starting from the root and ending at any leaf node. A leaf is a node with no children.
+
+Example 1: 
+    - Input: root = [5,4,8,11,null,13,4,7,2,null,null,5,1], targetSum = 22
+    - Output: [[5,4,11,2],[5,8,4,5]]
+    - Explaination: There are two paths whose sum equals targetSum:
+    5 + 4 + 11 + 2 = 22
+    5 + 8 + 4 + 5 = 22
+
+Example 2: 
+    - Input: root = [1,2], targetSum = 0
+    - Output: []
+
+"""
+def pathSum(root, targetSum):
+    if not root: 
+        return []
+    result = []
+
+    def process(node, target, tmp_val_lst, curr_sum):
+        tmp_val_lst.append(node.val)
+        curr_sum += node.val 
+
+        if not node.left and not node.right and curr_sum == target: 
+            result.append(list(tmp_val_lst))
+
+        process(node.left, target, tmp_val_lst, curr_sum)
+        process(node.right, target, tmp_val_lst, curr_sum)
+
+        tmp_val_lst.pop()
+    
+    process(root, targetSum, [], 0)
+    return result
