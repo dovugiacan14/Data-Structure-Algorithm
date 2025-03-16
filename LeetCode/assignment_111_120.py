@@ -238,3 +238,48 @@ def connect2(root):
                 queue.append(node.right)
         node.next = None 
     return root
+
+"""Assignment 118. Pascal's Triangle
+Given an integer numRows, return the first numRows of Pascal's triangle.
+In Pascal's triangle, each number is the sum of the two numbers directly above it as shown:
+
+Example 1:
+    - Input: numRows = 5
+    - Output: [[1],[1,1],[1,2,1],[1,3,3,1],[1,4,6,4,1]]
+"""
+
+def generate(numRows):
+    res = [[1]] 
+
+    for _ in range(1, numRows):
+        prev_row = res[-1]
+        new_row = [1]
+
+        for j in range(1, len(prev_row)):
+            new_row.append(prev_row[j-1], prev_row[j])
+        
+        new_row.append(1)   # last partition
+        res.append(new_row)
+   
+    return res
+
+"""Assignment 119. Pascal's Triangle
+Given an integer rowIndex, return the rowIndexth (0-indexed) row of the Pascal's triangle.
+In Pascal's triangle, each number is the sum of the two numbers directly above it as shown:
+
+Example 1:
+    - Input: rowIndex = 3
+    - Output: [1,3,3,1]
+"""
+def get_row(rowIndex): 
+    num_row = rowIndex 
+    res = [[1]]
+    for _ in range(1, num_row): 
+        prev_row = res[-1]
+        new_row = [1]
+
+        for j in range(1, len(prev_row)): 
+            new_row.append(prev_row[j-1] + prev_row[j])
+        new_row.append(1)
+        res.append(new_row)
+    return res[-1]
