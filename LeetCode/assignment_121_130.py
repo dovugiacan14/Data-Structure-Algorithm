@@ -110,7 +110,6 @@ def max_path_sum(root):
         max_sum = max(max_sum, node.val + left_gain + right_gain)
         return node.val + max(left_gain, right_gain)
     
-    
     dfs(root)
     return max_sum
 
