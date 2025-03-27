@@ -48,7 +48,7 @@ Example 2:
     - Input: s = "ab"
     - Output: 1
 """
-# ĐPT: (O(2^n))
+# ĐPT: O(2^n)
 def min_cut(s): 
     def is_palindrome(text): 
         return text == text[::-1]
@@ -75,8 +75,7 @@ def min_cut(s):
     return min_len - 1 
 
 
-
-# ĐPT: n^2
+# ĐPT: O(n^2)
 def min_cut_palindrome(s): 
     n = len(s)
     # palindrome checking. 
