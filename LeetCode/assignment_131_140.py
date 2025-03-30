@@ -166,7 +166,73 @@ def clone_graph(node: Node):
                 queue.append(neighor)
             old_to_new[curr].neighbors.append(old_to_new[neighor])
     return old_to_new[node]
-        
+
+
+"""Assignment 134. Gas Station.
+
+There are n gas stations along a circular route, where the amount of gas at the ith station is gas[i].
+You have a car with an unlimited gas tank and it costs cost[i] of gas to travel from the ith station to its next (i + 1)th station. 
+You begin the journey with an empty tank at one of the gas stations.
+Given two integer arrays gas and cost, return the starting gas station's index if you can travel around the circuit once in the clockwise direction, otherwise return -1. 
+If there exists a solution, it is guaranteed to be unique.
+
+Example 1:
+    - Input: gas = [1,2,3,4,5], cost = [3,4,5,1,2]
+    - Output: 3
+
+Example 2:
+    - Input: gas = [2,3,4], cost = [3,4,3]
+    - Output: -1
+"""
+def gas_station(gas, cost):
+    total_energy = 0 
+    cur_energy = 0
+    start = 0
+    for i in range(len(gas)):
+        total_energy += gas[i] - cost[i]
+        cur_energy += gas[i] - cost[i]
+        if cur_energy < 0: 
+            start = i + 1
+            cur_energy = 0
+    return start if total_energy >= 0 else -1
+
+def gas_station(gas, cost): 
+    if sum(cost) > sum(gas): 
+        return -1 
+    
+    tank = start = 0 
+    for i in range(len(gas)): 
+        tank += gas[i] - cost[i]
+        if tank < 0: 
+            tank = 0 
+            start = i + 1
+    return start 
+
+gas = [1, 2, 3, 4, 5]
+cost = [3, 4, 5, 1, 2]
+print(gas_station(gas, cost))
+
+
+"""Assignment 136. Palindrome Partitioning II.
+
+Given a non-empty array of integers nums, every element appears twice except for one. Find that single one.
+You must implement a solution with a linear runtime complexity and use only constant extra space.
+
+Example 1:
+    - Input: nums = [2,2,1]
+    - Output: 1
+
+Example 2:
+    - nums = [4,1,2,1,2]
+    - Output: 4
+"""
+from collections import Counter 
+
+def single_numbers(nums):
+    counter = Counter(nums)
+    for key, val in counter.items(): 
+        if val == 1: 
+            return key        
 
 
 
