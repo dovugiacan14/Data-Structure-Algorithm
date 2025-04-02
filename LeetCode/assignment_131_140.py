@@ -283,7 +283,7 @@ class Node(object):
         self.next = next 
         self.random = random  
 
-def copy_random_lst(self, head): 
+def copy_random_lst(head): 
     if not head: 
         return None 
     
@@ -305,4 +305,36 @@ def copy_random_lst(self, head):
     
     # step 3: return the head of the copied list 
     return old_to_new[head]
+
+
+"""Assignment 139. Word Break
+
+Given a string s and a dictionary of strings wordDict, return true if s can be segmented into a space-separated sequence of one or more dictionary words.
+Note that the same word in the dictionary may be reused multiple times in the segmentation.
+
+Example 1:
+    - Input: s = "leetcode", wordDict = ["leet","code"]
+    - Output: true 
+
+Example 2:
+    - Input: s = "catsandog", wordDict = ["cats","dog","sand","and","cat"]
+    - Output: false 
+"""
+
+# using dynamic programming 
+def word_break(s, wordDict): 
+    word_set = set(wordDict)
+    dp = [False] * (len(s) + 1)
+    dp[0] = True
+
+    for i in range(1, len(s) + 1):
+        for j in range(i): 
+            if dp[j] and s[j:i] in word_set: 
+                dp[i] = True 
+                break
+    return dp[len(s)]
+
+s = "applepenapple"
+wordDict = ["apple","pen"] 
+print(word_break(s, wordDict))
 
