@@ -348,6 +348,41 @@ def restore_ip_address(s):
     backtrack(0, [])
     return result
 
+
+"""Assignment 140. Word Break II
+
+Given a string s and a dictionary of strings wordDict, add spaces in s to construct a sentence where each word is a valid dictionary word. Return all such possible sentences in any order.
+Note that the same word in the dictionary may be reused multiple times in the segmentation.
+
+Example 1:
+    - Input: s = "catsanddog", wordDict = ["cat","cats","and","sand","dog"]
+    - Output: ["cats and dog","cat sand dog"]
+
+Example 2:
+    - Input: s = "pineapplepenapple", wordDict = ["apple","pen","applepen","pine","pineapple"]
+    - Output: ["pine apple pen apple","pineapple pen apple","pine applepen apple"]
+"""
+def word_break_v2(s, wordDict):
+    word_set = set(wordDict)
+    memo = {}
+    def backtrack(index):
+        if index in memo:
+            return memo[index]
+        if index == len(s): 
+            return [""]
+
+        sentences = []
+        for end in range(index + 1, len(s) + 1): 
+            word = s[index:end]
+            if word in word_set: 
+                rest_sentences = backtrack(end)
+                for sentence in rest_sentences: 
+                    sentences.append(word + (" " + sentence if sentence else ""))
+        memo[index] = sentences
+        return sentences
+        
+    return backtrack(0)
+
 if __name__ == "__main__": 
     # BT1 
     res = generate_string(1, 4, "", [])
@@ -376,3 +411,4 @@ if __name__ == "__main__":
     # BT4 
     solutions = queen_set(2)
     print(0)
+
