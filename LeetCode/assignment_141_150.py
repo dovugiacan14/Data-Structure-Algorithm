@@ -1,3 +1,5 @@
+from collections import deque
+
 """Assignment 141. Linked List Cycle 
 
 Given head, the head of a linked list, determine if the linked list has a cycle in it.
@@ -120,3 +122,51 @@ head.next.next = ListNode(3)
 head.next.next.next = ListNode(4)
 head.next.next.next.next = ListNode(5)
 reorder_list(head)
+
+"""Assignment 144. Binary Tree Preorder Traversal
+
+Given the root of a binary tree, return the preorder traversal of its nodes' values.
+
+Example 1:
+    - Input: root = [1,null,2,3]
+    - Output: [1, 2, 3]
+
+Example 2:
+    - Input: root = [1,2,3,4,5,null,8,null,null,6,7,9]
+    - Output: [1,2,4,5,6,7,3,8,9]
+"""
+
+class TreeNode(object):
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+    
+def preorder_traversal(root):
+    if not root: 
+        return []
+    
+    stack, output = [root], []
+    while stack: 
+        node = stack.pop()
+        if node: 
+            output.append(node.val)
+
+            if node.right: 
+                stack.append(node.right)
+            if node.left: 
+                stack.append(node.left)
+    return output
+
+def preorder_traversal(root):
+    result = []
+
+    def dfs(node):
+        if not node:
+            return 
+        result.append(node.val)
+        dfs(node.left)
+        dfs(node.right)
+    
+    dfs(root)
+    return result
