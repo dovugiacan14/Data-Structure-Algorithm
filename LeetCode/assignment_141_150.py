@@ -212,3 +212,52 @@ root.left.right.left = TreeNode(6)
 root.left.right.right = TreeNode(7)
 root.right.right.left = TreeNode(9)
 print(post_order_traversal(root))
+
+
+"""Assignment 146. LRU Cache
+
+Design a data structure that follows the constraints of a Least Recently Used (LRU) cache.
+
+Implement the LRUCache class:
+
+LRUCache(int capacity) Initialize the LRU cache with positive size capacity.
+int get(int key) Return the value of the key if the key exists, otherwise return -1.
+void put(int key, int value) Update the value of the key if the key exists. 
+Otherwise, add the key-value pair to the cache. If the number of keys exceeds the capacity from this operation, evict the least recently used key.
+The functions get and put must each run in O(1) average time complexity.
+
+Example 1:
+    - Input: 
+            ["LRUCache", "put", "put", "get", "put", "get", "put", "get", "get", "get"]
+            [[2], [1, 1], [2, 2], [1], [3, 3], [2], [4, 4], [1], [3], [4]]
+    - Output: 
+            [null, null, null, 1, null, -1, null, -1, 3, 4]
+"""
+class LRUCache(object):
+
+    def __init__(self, capacity):
+        """
+        :type capacity: int
+        """
+        
+
+    def get(self, key):
+        """
+        :type key: int
+        :rtype: int
+        """
+        
+
+    def put(self, key, value):
+        """
+        :type key: int
+        :type value: int
+        :rtype: None
+        """
+        
+
+
+# Your LRUCache object will be instantiated and called as such:
+# obj = LRUCache(capacity)
+# param_1 = obj.get(key)
+# obj.put(key,value)
