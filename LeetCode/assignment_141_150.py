@@ -1,4 +1,4 @@
-from collections import deque
+from collections import OrderedDict
 
 """Assignment 141. Linked List Cycle 
 
@@ -239,14 +239,18 @@ class LRUCache(object):
         """
         :type capacity: int
         """
-        
+        self.cache = OrderedDict()
+        self.capacity = capacity
 
     def get(self, key):
         """
         :type key: int
         :rtype: int
         """
-        
+        if key not in self.cache: 
+            return  -1 
+        self.cache.move_to_end(key)
+        return self.cache[key]
 
     def put(self, key, value):
         """
@@ -254,10 +258,65 @@ class LRUCache(object):
         :type value: int
         :rtype: None
         """
-        
+        if key in self.cache: 
+            self.cache.move_to_end(key)
+        self.cache[key] = value 
+        if len(self.cache) > self.capacity: 
+            self.cache.popitem(last= False)
+
+commands = ["LRUCache", "put", "put", "get", "put", "get", "put", "get", "get", "get"]
+args = [[2], [1, 1], [2, 2], [1], [3, 3], [2], [4, 4], [1], [3], [4]]
+
+res= []
+obj = None 
+for cmd, arg in zip(commands, args): 
+    if cmd == "LRUCache": 
+        obj = LRUCache(*arg)
+        res.append(None)
+    elif cmd == "put":
+        obj.put(*arg)
+        res.append(None)
+    elif cmd == "get": 
+        res.append(obj.get(*arg))
+print(res)
 
 
-# Your LRUCache object will be instantiated and called as such:
-# obj = LRUCache(capacity)
-# param_1 = obj.get(key)
-# obj.put(key,value)
+"""Assignment 147. Insertion Sort List 
+
+Given the head of a singly linked list, sort the list using insertion sort, and return the sorted list's head.
+The steps of the insertion sort algorithm:
+    1. Insertion sort iterates, consuming one input element each repetition and growing a sorted output list. 
+    2. at each iteration, insertion sort removes one element from the input data, finds the location it 
+belongs within the sorted list and inserts it there.
+    3. It repeats until no input elements remain. 
+
+Example 1:
+    - Input: head = [4, 2, 1, 3]
+    - Output: [1, 2, 3, 4] 
+
+Example 2:
+    - Input: head = [-1,5,3,4,0]
+    - Output: [-1, 0, 3, 4, 5]
+"""
+class ListNode(object):
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+    
+def insertion_sort_lst(head): 
+    if not head: 
+        return []
+    
+    head_lst = []
+    while head: 
+        head_lst.append(head.val)
+        head = head.next
+    
+    sorted_head_lst = head_lst.sort()
+    res_node = ListNode(sorted_head_lst[0])
+    cur = res_node
+    for val in sorted_head_lst[1:]: 
+        cur.next = ListNode(val)
+        cur = cur.next
+    return res_node
+    pass 
