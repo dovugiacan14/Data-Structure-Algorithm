@@ -1,4 +1,4 @@
-from collections import OrderedDict
+from collections import OrderedDict, defaultdict
 
 """Assignment 141. Linked List Cycle 
 
@@ -319,4 +319,116 @@ def insertion_sort_lst(head):
         cur.next = ListNode(val)
         cur = cur.next
     return res_node
-    pass 
+
+
+"""Assignment 148. Insertion Sort List 
+
+Given the head of a singly linked list, sort the list using insertion sort, and return the sorted list's head.
+The steps of the insertion sort algorithm:
+    1. Insertion sort iterates, consuming one input element each repetition and growing a sorted output list. 
+    2. at each iteration, insertion sort removes one element from the input data, finds the location it 
+belongs within the sorted list and inserts it there.
+    3. It repeats until no input elements remain. 
+
+Example 1:
+    - Input: head = [4, 2, 1, 3]
+    - Output: [1, 2, 3, 4] 
+
+Example 2:
+    - Input: head = [-1,5,3,4,0]
+    - Output: [-1, 0, 3, 4, 5]
+"""
+
+"""Assignment 149. Max Points on a Line
+
+Given an array of points where points[i] = [xi, yi] represents a point on the X-Y plane, return the maximum number of points that lie on the same straight line.
+
+Example 1:
+    - Input: points = [[1,1],[2,2],[3,3]]
+    - Output: 3
+
+Example 2:
+    - Input: points = [[1,1],[3,2],[5,3],[4,1],[2,3],[1,4]]
+    - Output: 4
+"""
+def max_points(points):
+    if len(points) <= 2: 
+        return len(points)
+    
+    def gcd(a, b): 
+        """find UCLN between a and b"""
+        while b: 
+            a, b = b, a % b
+        return a 
+    
+    max_result = 0 
+    for i in range(len(points)): 
+        slope_count = defaultdict(list)
+        overlap = 0 
+        curr_max = 0 
+        x1, y1 = points[i]
+
+        for j in range(i + 1, len(points)): 
+            x2, y2 = points[j]
+            dx = x2 - x1 
+            dy = y2 - y1 
+
+            if dx == 0 and dy ==0: 
+                overlap += 1 
+                continue 
+
+            g = gcd(dx, dy)
+            dx //= g 
+            dy //= g 
+            if dx < 0: 
+                dx, dy = -dx, -dy 
+            
+            slope = (dy, dx)
+            slope_count[slope] += 1 
+            curr_max = max(curr_max, slope_count[slope])
+        max_result = max(max_result, curr_max + overlap + 1)
+    return max_result
+
+"""Assignment 150. Evaluate Reverse Polish Notation
+
+You are given an array of strings tokens that represents an arithmetic expression in a Reverse Polish Notation.
+Evaluate the expression. Return an integer that represents the value of the expression.
+
+Note that: 
+    - The valid operators are '+', '-', '*', and '/'.
+    - Each operand may be an integer or another expression.
+    - The division between two integers always truncates toward zero.
+    - There will not be any division by zero.
+    - The input represents a valid arithmetic expression in a reverse polish notation.
+    - The answer and all the intermediate calculations can be represented in a 32-bit integer.
+
+Example 1:
+    - Input: tokens = ["2","1","+","3","*"]
+    - Output: 9 
+    - Explaination: ((2 + 1) * 3) = 9
+
+Example 2:
+    - Input: tokens = ["4","13","5","/","+"]
+    - Output: 6
+    - Explaination: (4 + (13 /5)) = 6
+
+"""
+def evalRPN(tokens): 
+    stack = []
+    for t in tokens: 
+        if t not in "+-*/":
+            stack.append(int(t))
+        else: 
+            r, l = stack.pop(), stack.pop()
+            if t == "+":
+                stack.append(l + r)
+            elif t == "-": 
+                stack.append(l - r)
+            elif t == "*":
+                stack.append(l * r)
+            else: 
+                stack.append(int(float(l)/r))
+    return stack.pop()
+
+tokens = ["10","6","9","3","+","-11","*","/","*","17","+","5","+"]
+out = evalRPN(tokens)
