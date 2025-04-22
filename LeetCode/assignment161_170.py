@@ -48,5 +48,43 @@ def maximum_gap(nums):
         max_gap = gap if gap > max_gap else max_gap
     return max_gap
 
-nums = [3,6,9,1]
-print(maximum_gap(nums))
+"""Assignment 165. Compare Version Numbers
+
+Given two version strings, version1 and version2, compare them. A version string consists of revisions separated by dots '.'. 
+The value of the revision is its integer conversion ignoring leading zeros.
+
+To compare version strings, compare their revision values in left-to-right order. 
+If one of the version strings has fewer revisions, treat the missing revision values as 0.
+Return the following:
+    - If version1 < version2, return -1.
+    - If version1 > version2, return 1.
+    - Otherwise, Return 0 
+
+Example 1:
+    - Input: version1 = "1.2", version2 = "1.10"
+    - Output: -1
+    - Explaination: version1's second revision is "2" and version2's second revision is "10": 2 < 10, so version1 < version2.
+
+Example 2:
+    - Input: version1 = "1.01", version2 = "1.001"
+    - Output: 0
+"""
+def compare_version(version1, version2): 
+    v1 = list(map(int, version1.split('.')))
+    v2 = list(map(int, version2.split('.')))
+
+    # make both versions the same length by padding with 0 
+    max_len = max(len(v1), len(v2))
+    v1 += [0] * (max_len - len(v1))
+    v2 += [0] * (max_len - len(v2))
+
+    for a, b in zip(v1, v2): 
+        if a > b: 
+            return 1 
+        elif a < b: 
+            return -1
+    return 0
+        
+version1 = "1.2"
+version2 = "1.10"
+print(compare_version(version1, version2))
