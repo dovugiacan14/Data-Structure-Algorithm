@@ -84,7 +84,58 @@ def compare_version(version1, version2):
         elif a < b: 
             return -1
     return 0
+
+"""Assignment 166. Fraction to Recurring Decimal
+
+Given two integers representing the numerator and denominator of a fraction, return the fraction in string format.
+If the fractional part is repeating, enclose the repeating part in parentheses.
+If multiple answers are possible, return any of them.
+It is guaranteed that the length of the answer string is less than 10^4 for all the given inputs.
+
+Example 1:
+    - Input: numerator = 1, denominator = 2
+    - Output: "0.5"
+
+Example 2:
+    - Input: numerator = 2, denominator = 1
+    - Output: "2"
+"""
+
+def fraction_to_decimal(numerator, denominator):
+    if numerator == 0: 
+        return "0"
+
+    res = []
+    
+    # handle sign 
+    if (numerator < 0 and denominator >= 0) or (numerator >= 0 and denominator < 0):
+        res.append("-") 
+    numerator = abs(numerator)
+    denominator = abs(denominator)
+
+    # whole part 
+    res.append(str(numerator // denominator))
+    remainder = numerator % denominator 
+
+    if remainder == 0: 
+        return "".join(res)
+    
+    # map remainder to its index in the result.
+    remainder_map = {}
+    while remainder_map != 0: 
+        if remainder in remainder_map: 
+            index = remainder_map[remainder]
+            res.insert(index, "(")
+            res.append(")")
+            break 
+            
+        remainder_map[remainder] = len(res)
+        remainder *= 10 
+        res.append(str(remainder // denominator))
+        remainder %= denominator 
+    return "".join(res)
+
+numerator = 1
+denominator = 2
+print(fraction_to_decimal(numerator, denominator))
         
-version1 = "1.2"
-version2 = "1.10"
-print(compare_version(version1, version2))
