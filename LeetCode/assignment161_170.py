@@ -138,4 +138,46 @@ def fraction_to_decimal(numerator, denominator):
 numerator = 1
 denominator = 2
 print(fraction_to_decimal(numerator, denominator))
-        
+
+
+"""Assignment 167. Two Sum II - Input Array Is Sorted
+
+Given a 1-indexed array of integers numbers that is already sorted in non-decreasing order, find two numbers such that they add up to a specific target number. 
+Let these two numbers be numbers[index1] and numbers[index2] where 1 <= index1 < index2 <= numbers.length.
+Return the indices of the two numbers, index1 and index2, added by one as an integer array [index1, index2] of length 2.
+
+The tests are generated such that there is exactly one solution. You may not use the same element twice.
+
+Your solution must use only constant extra space.
+
+Example 1:
+    - Input: numbers = [2,7,11,15], target = 9
+    - Output: [1,2]
+
+Example 2:
+    - Input: numbers = [2,3,4], target = 6
+    - Output: [1, 3]
+"""
+def two_sum(numbers, target): 
+    for i in range(len(numbers) - 1): 
+        for j in range(i + 1, len(numbers)): 
+            if numbers[i] + numbers[j] == target: 
+                return i+1, j+1
+            elif numbers[i] + numbers[j] > target: 
+                break 
+        continue
+
+    return -1, -1
+
+def two_sum(numbers, target): 
+    num_map = {}
+    for i, num in enumerate(numbers): 
+        complement = target - num
+        if complement in num_map: 
+            return num_map[complement] + 1, i + 1 
+        num_map[num] = i
+    return -1, -1 
+
+nums = [2, 7, 11, 15] 
+target = 22
+print(two_sum(nums, target)) 
