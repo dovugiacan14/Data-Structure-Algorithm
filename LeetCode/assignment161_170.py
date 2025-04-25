@@ -135,10 +135,6 @@ def fraction_to_decimal(numerator, denominator):
         remainder %= denominator 
     return "".join(res)
 
-numerator = 1
-denominator = 2
-print(fraction_to_decimal(numerator, denominator))
-
 
 """Assignment 167. Two Sum II - Input Array Is Sorted
 
@@ -178,6 +174,35 @@ def two_sum(numbers, target):
         num_map[num] = i
     return -1, -1 
 
-nums = [2, 7, 11, 15] 
-target = 22
-print(two_sum(nums, target)) 
+
+"""Assignment 168. Excel Sheet Column Title
+
+Given an integer columnNumber, return its corresponding column title as it appears in an Excel sheet.
+For example:
+    A -> 1
+    B -> 2
+    C -> 3
+    ...
+    Z -> 26
+    AA -> 27
+    AB -> 28 
+    ...
+
+Example 1:
+    - Input: columnNumber = 28
+    - Output:  "AB"
+
+Example 2:
+    - Input: columnNumber = 701
+    - Output: "ZY"
+"""
+def convert_to_title(columnNumber):
+    result = []
+    while columnNumber > 0: 
+        columnNumber -= 1 
+        remainder = columnNumber % 26 
+        result.append(chr(remainder + ord("A")))
+        columnNumber //=26
+    return ''.join(reversed(result))
+
+print(convert_to_title(701))
