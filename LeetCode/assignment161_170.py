@@ -205,4 +205,31 @@ def convert_to_title(columnNumber):
         columnNumber //=26
     return ''.join(reversed(result))
 
-print(convert_to_title(701))
+
+"""Assignment 169. Main Stack
+
+Given an array nums of size n, return the majority element.
+The majority element is the element that appears more than ⌊n / 2⌋ times. You may assume that the majority element always exists in the array.
+
+You must implement a solution with O(1) time complexity for each function.
+
+Example 1:
+    - Input: nums = [3,2,3]
+    - Output:  3
+
+Example 2:
+    - Input: nums = [2,2,1,1,1,2,2]
+    - Output: 2
+"""
+from collections import Counter 
+
+def majority_element(nums):
+    freq_dict = Counter(nums)
+    freq_dict = dict(freq_dict)
+    res= 0 
+    max_freq = 0
+    for key, val in freq_dict.items(): 
+        if val > max_freq: 
+            max_freq = val
+            res = key 
+    return res
