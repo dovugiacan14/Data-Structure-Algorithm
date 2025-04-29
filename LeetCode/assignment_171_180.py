@@ -1,4 +1,4 @@
-"""Assignment 171. Excel Sheet Column Number. 
+"""Assignment 171. Excel Sheet Column Number.
 
 Given a string columnTitle that represents the column title as appears in an Excel sheet, return its corresponding column number.
 For example:
@@ -8,7 +8,7 @@ For example:
     ...
     Z -> 26
     AA -> 27
-    AB -> 28 
+    AB -> 28
     ...
 
 Example 1:
@@ -19,11 +19,14 @@ Example 2:
     - Input: columnTitle = "AB"
     - Output: 28
 """
+
+
 def title_to_number(columnTitle):
-    result = 0 
+    result = 0
     for char in columnTitle:
         result = result * 26 + (ord(char) - ord("A") + 1)
-    return result 
+    return result
+
 
 column_title = "ZY"
 print(title_to_number(column_title))
@@ -43,30 +46,77 @@ Example 2:
     - Output: 1
     - Explaination: 5! = 120 trailing zero 
 """
+
+
 def trailing_zeroes(n):
-    if n == 0: 
-        return 0 
-    
-    def factorial(x): 
-        if x == 1: 
-            return 1 
+    if n == 0:
+        return 0
+
+    def factorial(x):
+        if x == 1:
+            return 1
         return x * factorial(x - 1)
-    
-    output = factorial(n)
-    res = 0 
-    while output > 10: 
-        if output % 10 != 0: 
-            break 
-        res += 1
-        output = output // 10 
 
-    return res 
+    output = factorial(n)
+    res = 0
+    while output > 10:
+        if output % 10 != 0:
+            break
+        res += 1
+        output = output // 10
+
+    return res
+
 
 def trailing_zeroes(n):
-    res = 0 
-    while n > 0: 
-        n = n // 5 
+    res = 0
+    while n > 0:
+        n = n // 5
         res += n
     return res
 
+
 print(trailing_zeroes(10))
+
+
+"""Assignment 173. Binary Search Tree Iterator 
+Implement the BSTIterator class that represents an iterator over the in-order traversal of a binary search tree (BST):
+    - BSTIterator(TreeNode root) Initializes an object of the BSTIterator class. The root of the BST is given as part of the constructor. 
+    The pointer should be initialized to a non-existent number smaller than any element in the BST.
+    - boolean hasNext() Returns true if there exists a number in the traversal to the right of the pointer, otherwise returns false.
+    - int next() Moves the pointer to the right, then returns the number at the pointer.
+Notice that by initializing the pointer to a non-existent smallest number, the first call to next() will return the smallest element in the BST.
+You may assume that next() calls will always be valid. That is, there will be at least a next number in the in-order traversal when next() is called.
+
+Example 1: 
+    - Input: ["BSTIterator", "next", "next", "hasNext", "next", "hasNext", "next", "hasNext", "next", "hasNext"]
+             [[[7, 3, 15, null, null, 9, 20]], [], [], [], [], [], [], [], [], []]
+    - Output: [null, 3, 7, true, 9, true, 15, true, 20, false]
+"""
+
+
+class TreeNode(object):
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+
+class BSTIterator(object):
+    def __init__(self, root):
+        self.stack = []
+        self._push_left_nodes(root)
+
+    def _push_left_nodes(self, node):
+        while node: 
+            self.stack.append(node)
+            node = node.left
+
+    def next(self):
+        top_node = self.stack.pop()
+        if top_node.right: 
+            self._push_left_nodes(top_node.right)
+        return top_node.val 
+
+    def hasNext(self):
+        return len(self.stack) > 0 
