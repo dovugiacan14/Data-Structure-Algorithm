@@ -151,10 +151,16 @@ def calculate_minimum(dungeon):
 dungeon = [[-2,-3,3],[-5,-10,1],[10,30,-5]] 
 print(calculate_minimum(dungeon))
 
-"""Assignment 176: Combine Two Tables."""
+"""Assignment 175: Combine Two Tables."""
 import pandas as pd 
 
 def combine_two_tables(person_tab: pd.DataFrame, address_tab: pd.DataFrame):
     result = pd.merge(person_tab, address_tab, on= "personId", how= "left")
     result = result[["firstName", "lastName", "city", "state"]]
     return result
+
+
+"""Assignment 176: Second Highest Salary."""
+def second_highes_salary(employee: pd.DataFrame):
+    unique_employee = employee["salary"].drop_duplicates().nlargest(2)
+    return unique_employee.iloc[-1] if len(unique_employee) > 1 else None 
