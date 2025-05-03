@@ -164,3 +164,9 @@ def combine_two_tables(person_tab: pd.DataFrame, address_tab: pd.DataFrame):
 def second_highes_salary(employee: pd.DataFrame):
     unique_employee = employee["salary"].drop_duplicates().nlargest(2)
     return unique_employee.iloc[-1] if len(unique_employee) > 1 else None 
+
+"""Assignment 177: Nth Highest Salary"""
+def nth_highest_salary(employee: pd.DataFrame, N: int): 
+    unique_salaries = employee["salary"].drop_duplicates().sort_values(ascending= False)
+    n_salary = unique_salaries.iloc[N-1] if len(unique_salaries) >= N else None 
+    return pd.DataFrame({f"getNthHighestSalary({N})": [n_salary]})
