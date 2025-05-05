@@ -175,3 +175,40 @@ def nth_highest_salary(employee: pd.DataFrame, N: int):
 def order_scores(scores: pd.DataFrame):
     scores["rank"] = scores["score"].rank(method= "dense", ascending= False)
     return scores.sort_values("score", ascending= False)[["score", "rank"]]
+
+"""Assignment 179: Largest Number
+Given a list of non-negative integers nums, arrange them such that they form the largest number and return it.
+Since the result may be very large, so you need to return a string instead of an integer.
+
+Example 1: 
+    - Input: nums = [10,2]
+    - Output: 210 
+
+Example 2: 
+    - Input: nums = [3,30,34,5,9]
+    - Output: 9534330
+"""
+from functools import cmp_to_key 
+
+def largest_number(nums):
+    num_str = list(map(str, nums))
+
+    # custom comparator: sort based on which combination is greater 
+    def compare(x, y): 
+        if x + y > y + x: 
+            return -1   # x should come before y 
+        elif x + y < y + x: 
+            return 1    # y should come before x 
+        else: 
+            return 0    # order doesn't matter 
+    
+    num_str.sort(key= cmp_to_key(compare))
+
+    # edge case: if the largest number is "0" return "0"
+    if num_str[0] == "0":
+        return "0"
+
+    return "".join(num_str)
+
+nums = [3,30,34,5,9] 
+print(largest_number(nums))
