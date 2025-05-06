@@ -108,18 +108,19 @@ class BSTIterator(object):
         self._push_left_nodes(root)
 
     def _push_left_nodes(self, node):
-        while node: 
+        while node:
             self.stack.append(node)
             node = node.left
 
     def next(self):
         top_node = self.stack.pop()
-        if top_node.right: 
+        if top_node.right:
             self._push_left_nodes(top_node.right)
-        return top_node.val 
+        return top_node.val
 
     def hasNext(self):
-        return len(self.stack) > 0 
+        return len(self.stack) > 0
+
 
 """Assignment 174. Dungeon Game
 The demons had captured the princess and imprisoned her in the bottom-right corner of a dungeon. The dungeon consists of m x n rooms laid out in a 2D grid. 
@@ -136,45 +137,57 @@ Example 1:
     - Explaination: The initial health of the knight must be at least 7 if he follows the optimal path: RIGHT-> RIGHT -> DOWN -> DOWN.
 """
 
-# Using Dynamic Programming
-def calculate_minimum(dungeon): 
-    m, n = len(dungeon), len(dungeon[0])
-    dp = [[float('inf')] * (n + 1) for _ in range(m+1)]
-    dp[m][n-1] = dp[m-1][n] = 1 # base case: princess cell 
 
-    for i in range(m-1, -1, -1): 
-        for j in range(n-1, -1, -1):
-            need =  min(dp[i+1][j], dp[i][j + 1]) - dungeon[i][j]
+# Using Dynamic Programming
+def calculate_minimum(dungeon):
+    m, n = len(dungeon), len(dungeon[0])
+    dp = [[float("inf")] * (n + 1) for _ in range(m + 1)]
+    dp[m][n - 1] = dp[m - 1][n] = 1  # base case: princess cell
+
+    for i in range(m - 1, -1, -1):
+        for j in range(n - 1, -1, -1):
+            need = min(dp[i + 1][j], dp[i][j + 1]) - dungeon[i][j]
             dp[i][j] = max(1, need)
     return dp[0][0]
-        
-dungeon = [[-2,-3,3],[-5,-10,1],[10,30,-5]] 
+
+
+dungeon = [[-2, -3, 3], [-5, -10, 1], [10, 30, -5]]
 print(calculate_minimum(dungeon))
 
 """Assignment 175: Combine Two Tables."""
-import pandas as pd 
+import pandas as pd
+
 
 def combine_two_tables(person_tab: pd.DataFrame, address_tab: pd.DataFrame):
-    result = pd.merge(person_tab, address_tab, on= "personId", how= "left")
+    result = pd.merge(person_tab, address_tab, on="personId", how="left")
     result = result[["firstName", "lastName", "city", "state"]]
     return result
 
 
 """Assignment 176: Second Highest Salary."""
+
+
 def second_highes_salary(employee: pd.DataFrame):
     unique_employee = employee["salary"].drop_duplicates().nlargest(2)
-    return unique_employee.iloc[-1] if len(unique_employee) > 1 else None 
+    return unique_employee.iloc[-1] if len(unique_employee) > 1 else None
+
 
 """Assignment 177: Nth Highest Salary"""
-def nth_highest_salary(employee: pd.DataFrame, N: int): 
-    unique_salaries = employee["salary"].drop_duplicates().sort_values(ascending= False)
-    n_salary = unique_salaries.iloc[N-1] if len(unique_salaries) >= N else None 
+
+
+def nth_highest_salary(employee: pd.DataFrame, N: int):
+    unique_salaries = employee["salary"].drop_duplicates().sort_values(ascending=False)
+    n_salary = unique_salaries.iloc[N - 1] if len(unique_salaries) >= N else None
     return pd.DataFrame({f"getNthHighestSalary({N})": [n_salary]})
 
+
 """Assignment 178: Rank Scores"""
+
+
 def order_scores(scores: pd.DataFrame):
-    scores["rank"] = scores["score"].rank(method= "dense", ascending= False)
-    return scores.sort_values("score", ascending= False)[["score", "rank"]]
+    scores["rank"] = scores["score"].rank(method="dense", ascending=False)
+    return scores.sort_values("score", ascending=False)[["score", "rank"]]
+
 
 """Assignment 179: Largest Number
 Given a list of non-negative integers nums, arrange them such that they form the largest number and return it.
@@ -188,21 +201,22 @@ Example 2:
     - Input: nums = [3,30,34,5,9]
     - Output: 9534330
 """
-from functools import cmp_to_key 
+from functools import cmp_to_key
+
 
 def largest_number(nums):
     num_str = list(map(str, nums))
 
-    # custom comparator: sort based on which combination is greater 
-    def compare(x, y): 
-        if x + y > y + x: 
-            return -1   # x should come before y 
-        elif x + y < y + x: 
-            return 1    # y should come before x 
-        else: 
-            return 0    # order doesn't matter 
-    
-    num_str.sort(key= cmp_to_key(compare))
+    # custom comparator: sort based on which combination is greater
+    def compare(x, y):
+        if x + y > y + x:
+            return -1  # x should come before y
+        elif x + y < y + x:
+            return 1  # y should come before x
+        else:
+            return 0  # order doesn't matter
+
+    num_str.sort(key=cmp_to_key(compare))
 
     # edge case: if the largest number is "0" return "0"
     if num_str[0] == "0":
@@ -210,5 +224,11 @@ def largest_number(nums):
 
     return "".join(num_str)
 
-nums = [3,30,34,5,9] 
+
+nums = [3, 30, 34, 5, 9]
 print(largest_number(nums))
+
+"""Assginment 180: Consecutive Numbers"""
+def consecutive_numbers(logs):
+    logs["var"] = logs.num.rolling(window= 3).var()
+    return pd.DataFrame(data = {'ConsecutiveNums' : logs.query('var == 0').num.unique()})
