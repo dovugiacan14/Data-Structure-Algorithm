@@ -42,3 +42,11 @@ def find_customers(customers: pd.DataFrame, orders: pd.DataFrame) -> pd.DataFram
     df_result = pd.DataFrame({'Customers': need_order_name})
     return df_result
 
+"""Assignment 184: Department Highest Salary"""
+def department_highest_salary(employee: pd.DataFrame, department: pd.DataFrame) -> pd.DataFrame:
+    merged_df = employee.merge(department, left_on="departmentId", right_on="id", how="left")
+    
+    # find the highest salary in each department 
+    highest_salary_df = merged_df.groupby("name")["salary"].max().reset_index()
+    highest_salary_df.rename(columns={"name": "Department", "salary": "HighestSalary"}, inplace=True)
+    return highest_salary_df
