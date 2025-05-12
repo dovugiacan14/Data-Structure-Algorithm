@@ -44,9 +44,35 @@ def find_customers(customers: pd.DataFrame, orders: pd.DataFrame) -> pd.DataFram
 
 """Assignment 184: Department Highest Salary"""
 def department_highest_salary(employee: pd.DataFrame, department: pd.DataFrame) -> pd.DataFrame:
-    merged_df = employee.merge(department, left_on="departmentId", right_on="id", how="left")
-    
-    # find the highest salary in each department 
-    highest_salary_df = merged_df.groupby("name")["salary"].max().reset_index()
-    highest_salary_df.rename(columns={"name": "Department", "salary": "HighestSalary"}, inplace=True)
-    return highest_salary_df
+    duplicate = employee.drop_duplicates(["salary", "departmentId"])
+    df_sorted = duplicate.sort_values(by=["salary"], ascending= False)
+    df_groupby = df_sorted.groupby("departmentId").head(3)
+    df = employee.merge(department, how ="left", left_on = "departmentId",right_on = "id")
+    merging = df.merge(df_groupby[["salary","departmentId"]], how ="inner", on = ["departmentId","salary"])
+    merging =  merging.rename(columns ={"name_y":"Department", "name_x": "Employee", "salary":"Salary"})
+    return merging[["Department","Employee", "Salary"]]
+
+"""Assignment 187: Repeat DNA Sequences
+The DNA sequence is composed of a series of nucleotides abbreviated as 'A', 'C', 'G', and 'T'.
+
+For example, "ACGAATTCCG" is a DNA sequence.
+When studying DNA, it is useful to identify repeated sequences within the DNA.
+
+Given a string s that represents a DNA sequence, return all the 10-letter-long sequences (substrings) that occur more than once in a DNA molecule. 
+You may return the answer in any order.
+"""
+def find_repeat_dna_sequences(s):
+    """Idea: 
+        - Traversal all input s, get all sub string has lenght = 10 
+        - Use Dictionary (hash map) to count the existence of each substring 
+        - Return list substring that occur more than 1. 
+    """
+    seen = set()
+    repeated = set()
+    for i in range(len(s) - 9):
+        sequence = s[i : i+10]
+        if sequence in seen: 
+            repeated.add(sequence)
+        else: 
+            seen.add(sequence)
+    return list(sequence)
