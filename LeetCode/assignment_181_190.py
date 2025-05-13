@@ -76,3 +76,18 @@ def find_repeat_dna_sequences(s):
         else: 
             seen.add(sequence)
     return list(sequence)
+
+"""Assignment 189: Rotate Array 
+Given an integer array nums, rotate the array to the right by k steps, where k is non-negative.
+
+Example: 
+    - Input: nums = [1,2,3,4,5,6,7], k = 3
+    - Output: [5, 6, 7, 1, 2, 3, 4]
+"""
+def rotate(nums, k):
+    """
+    Do not return anything, modify nums in-place instead.
+    """
+    n = len(nums)
+    k = k % n 
+    nums[:] = nums[-k:] + nums[:-k]
