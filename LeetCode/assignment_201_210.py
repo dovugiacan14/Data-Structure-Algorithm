@@ -1,3 +1,5 @@
+from typing import Optional
+
 """Assignment 201: Binary Tree Right Side View
 Given two integers left and right that represent the range [left, right], return the bitwise AND of all numbers in this range, inclusive.
 
@@ -61,3 +63,41 @@ def is_happy(n):
         seen.add(n)
         n = calculate_sum_square(n)
     return True
+
+
+"""Assignment 203: Remove Linked List Elements
+Given the head of a linked list and an integer val, remove all the nodes of the linked list that has Node.val == val, and return the new head.
+
+Example 1: 
+- Input head = [1,2,6,3,4,5,6], val = 6
+- Output: [1,2,3,4,5]
+
+Example 2: 
+- Input: head = [7,7,7,7], val = 7
+- Output: 7
+
+"""
+class ListNode: 
+    def __init__(self, val, next= None):
+        self.val = val 
+        self.next = next 
+    
+def remove_elements(head: Optional[ListNode], val: int):
+    if not head:
+        return None 
+    
+    arr = []
+    while head:
+        arr.append(head.val)
+        head = head.next
+    # delete 
+    new_list = [x for x in arr if x != val]
+    if not new_list:
+        return None 
+    
+    new_head = ListNode(new_list[0])
+    cur = new_head
+    for val in new_list[1:]:
+        cur.next = ListNode(val)
+        cur = cur.next
+    return new_head
