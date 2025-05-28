@@ -101,3 +101,50 @@ def remove_elements(head: Optional[ListNode], val: int):
         cur.next = ListNode(val)
         cur = cur.next
     return new_head
+
+
+"""Assignment 204: Count Primes
+Given an integer n, return the number of prime numbers that are strictly less than n.
+
+Example 1: 
+- Input: n = 10
+- Output: 4 
+- Explaination: There are 4 prime numbers less than 10, they are 2, 3, 5, 7.
+
+Example 2: 
+- Input: n = 0
+- Output: 0
+
+Example 3: 
+- Input: n = 1 
+- Output: 0 
+
+"""
+# O(N^2)
+def count_primes(n):
+    if n < 2: 
+        return 0 
+    count = 0
+    for i in range(2, n):
+        check = 0  
+        for j in range(2, i):
+            if i % j == 0:
+                check += 1 
+        if check == 0: 
+            count += 1
+    return count 
+
+# O(N.log(N))
+def count_primes(n):
+    if n < 2: 
+        return 0 
+    is_prime = [True] * n
+    is_prime[0] = is_prime[1] = False 
+    for i in range(2, int(n**0.5) + 1):
+        if is_prime[i]:
+            for j in range(i*i, n, i):
+                is_prime[j] = False
+    return sum(is_prime)
+
+n= 10
+print(count_primes(n))
