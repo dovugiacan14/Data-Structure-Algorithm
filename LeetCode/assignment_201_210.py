@@ -278,3 +278,66 @@ def can_finish(numCourses, prerequisites):
         if not dfs(course):
             return False 
     return True 
+
+"""Assignment 208: Implement Trie (Prefix Tree)
+A trie (pronounced as "try") or prefix tree is a tree data structure used to efficiently store and retrieve keys in a dataset of strings. 
+There are various applications of this data structure, such as autocomplete and spellchecker
+
+Implement the Trie class: 
+- Trie() Initializes the trie object.
+- void insert(String word) Inserts the string word into the trie.
+- boolean search(String word) Returns true if the string word is in the trie (i.e., was inserted before), and false otherwise.
+- boolean startsWith(String prefix) Returns true if there is a previously inserted string word that has the prefix prefix, and false otherwise.
+
+Example 1:
+    - Input: ["Trie", "insert", "search", "search", "startsWith", "insert", "search"]
+            [[], ["apple"], ["apple"], ["app"], ["app"], ["app"], ["app"]]
+    - Output: [null, null, true, false, true, null, true]
+    - Explanation: 
+        + Trie trie = new Trie();
+        + trie.insert("apple");
+        + trie.search("apple");  
+        + trie.search("app"); 
+        + trie.startsWith("app"); 
+        + trie.insert("app");
+        + trie.search("app");  
+"""
+class TrieNode: 
+    def __init__(self): 
+        self.children = {}   # dictionary to store child node 
+        self.is_end = False  # True if the node represents the end of a word 
+
+class Trie:
+    def __init__(self):
+        self.root = TrieNode()    # Initialize root node 
+
+    def insert(self, word: str) -> None: 
+        node = self.root 
+        for char in word: 
+            if char not in node.children: 
+                node.children[char] = TrieNode()
+            node = node.children[char]
+        node.is_end = True    # mark the end of word 
+
+    def search(self, word: str) -> bool: 
+        node = self.root 
+        for char in word: 
+            if char not in node.children: 
+                return False 
+            node = node.children[char]
+        return node.is_end   # return True only if it's end of a word 
+
+    def startsWith(self, prefix: str) -> bool: 
+        node = self.root
+        for char in prefix: 
+            if char not in node.children: 
+                return False 
+            node = node.children[char]
+        return True 
+
+trie = Trie()
+trie.insert("apple")
+
+print(trie.search("apple")) 
+print(trie.search("app"))   
+print(trie.startsWith("app")) 
