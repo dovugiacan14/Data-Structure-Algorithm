@@ -1,5 +1,5 @@
 from typing import Optional
-from collections import defaultdict
+from collections import defaultdict, deque
 
 """Assignment 201: Binary Tree Right Side View
 Given two integers left and right that represent the range [left, right], return the bitwise AND of all numbers in this range, inclusive.
@@ -395,8 +395,63 @@ def min_subarray_len(target, nums):
             total -= nums[left]
             left += 1 
     return 0 if min_len == float("inf") else min_len
-    pass
 
 target = 11
 nums  = [1,1,1,1,1,1,1,1]
 print(min_subarray_len(target, nums))
+
+"""Assignment 210: Course Schedule II
+There are a total of numCourses courses you have to take, labeled from 0 to numCourses - 1. 
+You are given an array prerequisites where prerequisites[i] = [ai, bi] indicates that you must take course bi first if you want to take course ai.
+Return the ordering of courses you should take to finish all courses. If there are many valid answers, return any of them. If it is impossible to finish all courses, return an empty array.
+
+Example 1:
+    - Input: numCourses = 2, prerequisites = [[1,0]]
+    - Output: [0, 1]
+    - Explanation: There are a total of 2 courses to take. To take course 1 you should have finished course 0. So the correct course order is [0,1].
+
+Example 2: 
+    - Input: numCourses = 4, prerequisites = [[1,0],[2,0],[3,1],[3,2]]
+    - Output: [0,2,1,3]
+    - Explanation: There are a total of 4 courses to take. To take course 3 you should have finished both courses 1 and 2. Both courses 1 and 2 should be taken after you finished course 0.
+                So one correct course order is [0,1,2,3]. Another correct ordering is [0,2,1,3].
+"""
+def course_schedule_II(numCourses, prerequisites): 
+    """
+    Main Idea 
+        - Mỗi môn học là một đỉnh (node) trong đồ thị 
+        - Mỗi quan hệ [a, b] (phải học b trước a) là một cạnh có hướng từ b đến a. 
+        - Bài toán trở thành: liệt kê thứ tự topo (topological ordering) của các đỉnh trong đồ thị. 
+        - Nếu có chu trình, thì không thể hoàn thành tất cả các môn học, trả về []. 
+
+    Cách giải: 
+        B1: Xây dựng đồ thị & đếm số bậc vào (indegree)
+        B2: BFS - Topological Sort (Kahn's Algorithm)
+            - Tạo một hàng đợi (queue) chứa các môn có indegree = 0 (không có môn nào cần học trước).
+            - Lặp: 
+                + Lấy môn ra khỏi queue, thêm vào kết quả 
+                + Với mỗi môn học phụ thuộc vào nó: giảm indegree, nếu bằng 0 thì cho vào queue. 
+            - Cuối cùng, nếu kết quả đủ numCourses, trả về thứ tự đó. Nếu không -> có chu trình -> trả về []
+         
+    """
+    graph = defaultdict(list)
+    indegree = [0] * numCourses
+
+    # Build graph & indegree 
+    for a, b in prerequisites:
+        graph[b].append(a)
+        indegree[a] += 1 
+    
+    # Start with nodes with no prerequisites 
+    queue = deque([i for i in range(numCourses) if indegree[i] == 0])
+    order = []
+
+    while queue: 
+        course = queue.popleft()
+        order.append(course)
+
+        for neighbor in graph[course]: 
+            indegree[neighbor] -= 1
+            if indegree[neighbor] == 0: 
+                queue.append(neighbor)
+    return order if len(order) == numCourses else []
