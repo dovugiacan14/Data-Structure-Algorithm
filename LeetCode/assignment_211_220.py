@@ -105,3 +105,50 @@ def word_search(board, words):
         for j in range(n): 
             dfs(i, j, root)
     return result
+
+"""Assignment 213: House Robber II 
+You are a professional robber planning to rob houses along a street. 
+Each house has a certain amount of money stashed. All houses at this place are arranged in a circle. 
+That means the first house is the neighbor of the last one. 
+Meanwhile, adjacent houses have a security system connected, and it will automatically contact the police if two adjacent houses were broken into on the same night.
+
+
+Given an integer array nums representing the amount of money of each house, return the maximum amount of money you can rob tonight without alerting the police.
+Example 1: 
+- Input: nums = [2,3,2]
+- Output: 3
+- Explaination: You cannot rob house 1 (money = 2) and then rob house 3 (money = 2), because they are adjacent houses.
+
+Example 2: 
+- Input: nums = [1,2,3,1]
+- Output: 4 
+- Explaination: Rob house 1 (money = 1) and then rob house 3 (money = 3). Total amount you can rob = 1 + 3 = 4
+
+"""
+
+# Use Dynamic Programming 
+def rob(nums): 
+    """Phân tích
+    Vì không thể cướp cả nhà đầu tiên và nhà cuối cùng cùng lúc, ta chia bài toán thành hai trường hợp: 
+    1. Không cướp nhà đầu tiên -> Xét dãy nums[1:]
+    2. Không cướp nhà cuối cùng -> Xét dãy nums[:-1]
+    Sau đó, với mỗi trường hợp, ta dùng thuật toán House Robber I để tìm ta số tiền tối đa,
+    và cuối cùng lấy giá trị lớn nhất giữa hai trường hợp đó. 
+    """
+    if not nums: 
+        return 0 
+    if len(nums) == 1: 
+        return nums[0]
+    
+    def rob_linear(houses): 
+        prev1, prev2 = 0, 0 
+        for amount in houses: 
+            curr = max(prev1, prev2 + amount)
+            prev2 = prev1 
+            prev1 = curr
+        return prev1
+    
+    case1 = rob_linear(nums[:-1])
+    case2 = rob_linear(nums[1:])
+
+    return max(case1, case2)
