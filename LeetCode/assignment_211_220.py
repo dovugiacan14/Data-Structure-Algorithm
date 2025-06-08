@@ -1,3 +1,4 @@
+import heapq
 
 """Assignment 211: Design Add and Search Words Data Structure.
 Design a data structure that supports adding new words and finding if a string matches any previously added string.
@@ -152,3 +153,41 @@ def rob(nums):
     case2 = rob_linear(nums[1:])
 
     return max(case1, case2)
+
+"""Assignment 214: House Robber II 
+Given an integer array nums and an integer k, return the kth largest element in the array.
+Note that it is the kth largest element in the sorted order, not the kth distinct element.
+Can you solvw it without sorting ? 
+
+Example 1: 
+- Input: nums = [3,2,1,5,6,4], k = 2
+- Output: 5
+
+Example 2: 
+- Input: nums = [3,2,3,1,2,4,5,5,6], k = 4
+- Output: 4 
+
+"""
+def find_kth_largest(nums, k):
+    max_k = 0 
+    for i in range(k): 
+        max_k = max(nums)
+        nums.remove(max_k)
+    return max_k
+
+def find_kth_largest(nums, k):
+    """Ý tưởng: 
+    - Sử dụng min-heap kích thước k để giữ k phần tử lớn nhất. 
+    - Phần tử nhỏ nhất trong heap này chính là k-th largest. 
+    """
+    min_heap = nums[:k]
+    heapq.heapify(min_heap)
+
+    for num in nums[k:]:
+        if num > min_heap[0]:
+            heapq.heappushpop(min_heap, num)
+    return min_heap[0]
+
+nums = [3,2,3,1,2,4,5,5,6]
+k = 4
+print(find_kth_largest(nums, k))
