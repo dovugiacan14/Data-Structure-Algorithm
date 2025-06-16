@@ -12,6 +12,7 @@ Example 1:
 
 """
 
+
 # Use Dynamic Programming
 def maximal_square(matrix):
     if not matrix:
@@ -43,27 +44,55 @@ Example 2:
 - Input: root = [1]
 - Output: 1
 """
+
+
 class TreeNode(object):
-    def __init__(self, val= 0, left= None, right= None):
-        self.val = val 
-        self.left = left 
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
         self.right = right
-    
+
+
 def countNodes(root):
-    if not root: 
+    if not root:
         return 0
 
     def get_height(node, is_left):
-        height = 0 
-        while node: 
+        height = 0
+        while node:
             node = node.left if is_left else node.right
-            height += 1 
-        return height 
-        
+            height += 1
+        return height
+
     left_height = get_height(root, True)
     right_height = get_height(root, False)
 
     if left_height == right_height:
         return (1 << left_height) - 1
-    else: 
+    else:
         return 1 + countNodes(root.left) + countNodes(root.right)
+
+
+"""Assignment 223: Rectangle Area 
+Given the coordinates of two rectilinear rectangles in a 2D plane, return the total area covered by the two rectangles.
+The first rectangle is defined by its bottom-left corner (ax1, ay1) and its top-right corner (ax2, ay2).
+The second rectangle is defined by its bottom-left corner (bx1, by1) and its top-right corner (bx2, by2).
+
+Example 1:
+- Input: ax1 = -3, ay1 = 0, ax2 = 3, ay2 = 4, bx1 = 0, by1 = -1, bx2 = 9, by2 = 2
+- Output: 45
+
+Example 2: 
+- Input: ax1 = -2, ay1 = -2, ax2 = 2, ay2 = 2, bx1 = -2, by1 = -2, bx2 = 2, by2 = 2
+- Output: 16
+"""
+def computeArea(ax1, ay1, ax2, ay2, bx1, by1, bx2, by2):
+    area1 = (ax2 - ax1) * (ay2 - ay1) 
+    area2 = (bx2 - bx1) * (by2 - by1)
+
+    overlap_x = max(0, min(ax2, bx2) - max(ax1, bx1))
+    overlap_y = max(0, min(ay2, by2) - max(ay1, by1))
+
+    overlap_area = overlap_x * overlap_y
+    total_area = area1 + area2 - overlap_area
+    return total_area
