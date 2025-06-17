@@ -96,3 +96,56 @@ def computeArea(ax1, ay1, ax2, ay2, bx1, by1, bx2, by2):
     overlap_area = overlap_x * overlap_y
     total_area = area1 + area2 - overlap_area
     return total_area
+
+"""Assignment 224: Basic Calculator
+Given a string s representing a valid expression, implement a basic calculator to evaluate it, and return the result of the evaluation.
+Note: You are not allowed to use any built-in function which evaluates strings as mathematical expressions, such as eval()
+
+Example 1:
+- Input: s = "1 + 1"
+- Output: 2
+
+Example 2: 
+- Input: s = " 2-1 + 2 "
+- Output: 3
+
+Example 3: 
+- Input: s = "(1+(4+5+2)-3)+(6+8)"
+- Output: 23
+"""
+def basic_calculate(s): 
+    """IDEA
+    - Nếu là số -> đọc hết số nguyên (có thể nhiều chữ số) -> cộng / trừ vào kết quả hiện tại.
+    - Nếu là '+' hoặc '-' -> cập nhật dấu hiện tại.
+    - Nếu là "(" -> đẩy kết quả hiện tại và dấu hiện tại vào stack -> reset kết quả. 
+    - Nếu là ")" -> kết thúc một biểu thức con -> lấy dấu và kết quả trước đó từ stack ra -> tính kết quả tổng thể.  
+    """
+    stack = []
+    num = 0
+    result = 0
+    sign = 1
+
+    i = 0 
+    while i < len(s): 
+        char = s[i]
+        if char.isdigit():
+            num = 0
+            while i < len(s) and s[i].isdigit():
+                num = num * 10 + int(s[i])
+                i += 1 
+            result += sign * num
+            continue
+
+        elif char == "+": 
+            sign = 1 
+        elif char == "-": 
+            sign = -1
+        elif char == '(':
+            stack.append(result)
+            stack.append(sign)
+            result = 0
+            sign = 1
+        elif char == ')':
+            result = result * stack.pop() + stack.pop()
+        i += 1
+    return result
