@@ -1,4 +1,4 @@
-from collections import deque
+from collections import deque, Counter
 
 """Assignment 221: Maximal Square
 Given an m x n binary matrix filled with 0's and 1's, find the largest square containing only 1's and return its area.
@@ -166,17 +166,19 @@ Implement the MyStack class:
     - int top() Returns the element on the top of the stack.
     - boolean empty() Returns true if the stack is empty, false otherwise.
 """
+
+
 class MyStack:
     def __init__(self):
         self.q1 = deque()
         self.q2 = deque()
-    
+
     def push(self, x):
         self.q2.append(x)
         while self.q1:
             self.q2.append(self.q1.popleft())
         self.q1, self.q2 = self.q2, self.q1
-    
+
     def pop(self):
         return self.q1.popleft()
 
@@ -233,9 +235,11 @@ Example 2:
 - Input: s =" 3+5 / 2 "
 - Output: 5
 """
+
+
 def basic_calculate_II(s):
     s = s.replace(" ", "")
-    stack= []
+    stack = []
     num = 0
     sign = "+"
 
@@ -254,9 +258,10 @@ def basic_calculate_II(s):
                     prev = stack.pop()
                     result = int(prev / num) if prev * num >= 0 else -(-prev // num)
                     stack.append(result)
-                sign = ch 
+                sign = ch
                 num = 0
     return sum(stack)
+
 
 """Assignment 228: Summary Ranges
 You are given a sorted unique integer array nums.
@@ -276,24 +281,84 @@ Example 2:
 - Input:  nums = [0,2,3,4,6,8,9]
 - Output: ["0","2->4","6","8->9"]
 """
+
+
 def summary_range(nums):
     result = []
     if not nums:
         return result
-    
+
     start = nums[0]
     for i in range(1, len(nums)):
-        if nums[i] != nums[i-1] + 1:
+        if nums[i] != nums[i - 1] + 1:
             end = nums[i - 1]
             if start == end:
                 result.append(str(start))
-            else: 
+            else:
                 result.append(f"{start}->{end}")
             start = nums[i]
-    
+
     end = nums[-1]
-    if start == end: 
+    if start == end:
         result.append(str(start))
     else:
         result.append(f"{start}->{end}")
+    return result
+
+
+"""Assignment 229: Majority Element II
+Given an integer array of size n, find all elements that appear more than ⌊ n/3 ⌋ times.
+
+Example 1: 
+- Input: nums = [3,2,3]
+- Output: [3]
+
+Example 2: 
+- Input:  nums = [1]
+- Output: [1]
+"""
+
+
+def majority_element(nums):
+    n = len(nums)
+    thres = n // 3
+    freq = Counter(nums)
+    return [num for num, count in freq.items() if count > thres]
+
+
+"""Assignment 230: Kth Smallest Element in a BST
+Given the root of a binary search tree, and an integer k, return the kth smallest value (1-indexed) of all the values of the nodes in the tree.
+
+Example 1: 
+- Input: root = [3,1,4,null,2], k = 1
+- Output: 1
+
+Example 2: 
+- Input: root = [5,3,6,2,4,null,null,1], k = 3
+- Output: 3
+"""
+class TreeNode:
+    def __init__(self, val, left, right):
+        self.val = val 
+        self.left = left
+        self.right = right
+    
+def kth_smallest(root, k):
+    count = 0 
+    result = None 
+
+    def in_order(node):
+        nonlocal count, result 
+        if not node or result is not None: 
+            return 
+        
+        in_order(node.left)
+
+        count += 1 
+        if count == k:
+            result = node.val 
+            return 
+        
+        in_order(node.right)
+    in_order(root)
     return result
