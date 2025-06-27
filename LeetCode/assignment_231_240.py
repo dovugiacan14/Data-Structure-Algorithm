@@ -87,3 +87,34 @@ def count_digit_one(n):
         
         factor *= 10
     return count 
+
+"""Assignment 234: Palindrome Linked List 
+Given the head of a singly linked list, return true if it is a palindrome or false otherwise.
+
+Example 1: 
+- Input: head = [1,2,2,1]
+- Output: true
+
+Example 2: 
+- Input: head = [1,2]
+- Output: false
+"""
+
+class ListNode(object):
+    def __init__(self, val= 0, next= None):
+        self.val = val 
+        self.next = next 
+    
+def isPalindorme(head):
+    if not head: 
+        return False 
+    
+    arr = []
+    while head: 
+        arr.append(head.val)
+        head = head.next 
+    
+    reversed_arr = arr[::-1]
+    if arr == reversed_arr:
+        return True 
+    return False 
