@@ -43,3 +43,55 @@ def diffways_to_compute(expression):
             results = [int(expr)]
         memo[expr] = results
     return compute(expression)
+
+"""Assignment 242: Valid Anagram 
+Given two strings s and t, return true if t is an anagram of s, and false otherwise.
+
+Example 1: 
+- Input: s = "anagram", t = "nagaram"
+- Output: True
+
+Example 2: 
+- Input: s = "rat", t = "car"
+- Output: False
+"""
+
+def is_anagram(s, t):
+    sorted_s = sorted(s)
+    sorted_t = sorted(t)
+    return sorted_s == sorted_t
+
+"""Assignment 257: Binary Tree Paths 
+Given the root of a binary tree, return all root-to-leaf paths in any order.
+A leaf is a node with no children.
+
+Example 1: 
+- Input: root = [1,2,3,null,5]
+- Output: ["1->2->5","1->3"]
+
+Example 2: 
+- Input: root = 1 
+- Output: ["1"]
+"""
+class TreeNode(object):
+    def __init__(self, val=0, left=None, right= None):
+        self.val = val 
+        self.left = left 
+        self.right = right 
+
+def binary_tree_paths(root):
+    result = []
+
+    def dfs(node, path):
+        if not node: 
+            return 
+        
+        path += str(node.val)
+        if not node.left and not node.right:
+            result.append(path)
+        else: 
+            path += "->"
+            dfs(node.left, path)
+            dfs(node.right, path)
+    dfs(root, "")
+    return result
