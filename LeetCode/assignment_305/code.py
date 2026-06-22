@@ -9,7 +9,7 @@ def isAdditiveNumber(num):
                 return False
         
             start += len(c)
-            a, b = b, a + b 
+            a, b = b, c
         return True
 
     for i in range(1, n): 
