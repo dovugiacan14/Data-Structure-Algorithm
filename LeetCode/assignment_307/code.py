@@ -37,5 +37,4 @@ class NumArray(object):
         self._add(index + 1, delta) 
 
     def sumRange(self, left, right): 
-        new_sums = self.nums[left:right+1]
-        return sum(new_sums) 
+        return self._prefix_sum(right + 1) - self._prefix_sum(left)
