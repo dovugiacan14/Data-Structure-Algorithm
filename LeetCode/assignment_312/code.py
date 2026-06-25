@@ -1,0 +1,2 @@
+def maxCoins(nums): 
+    pass 
